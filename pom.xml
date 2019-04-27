@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.aden</groupId>
+    <artifactId>os</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>os_dao</module>
+        <module>os_biz</module>
+        <module>os_web_manager</module>
+        <module>os_web_user</module>
+    </modules>
+
+    <properties>
+        <spring-version>4.3.1.RELEASE</spring-version>
+    </properties>
+
+</project>

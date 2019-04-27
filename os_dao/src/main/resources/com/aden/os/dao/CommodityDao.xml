@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aden.os.dao.CommodityDao">
+    <resultMap id="commodity" type="Commodity">
+        <id column="id" property="id" javaType="Integer"/>
+        <result column="type_id" property="typeId" javaType="Integer"/>
+        <result column="stock" property="stock" javaType="Integer"/>
+        <result column="sales_volume" property="salesVolume" javaType="Integer"/>
+        <result column="price" property="price" javaType="Float"/>
+        <result column="name" property="name" javaType="String"/>
+        <result column="image" property="image" javaType="String"/>
+        <result column="status" property="status" javaType="String"/>
+        <result column="introduction" property="introduction" javaType="String"/>
+        <result column="detailed_introduction" property="detailedIntroduction" javaType="String"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+        <result column="added_time" property="addedTime" javaType="java.util.Date"/>
+        <association column="type_id" property="type" javaType="String" select="selectTypes"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Commodity">
+        insert into commodity(name, type_id, price, stock, image, introduction, detailed_introduction, sales_volume, create_time, update_time, status, added_time)
+         values (#{name}, #{typeId}, #{price}, #{stock}, #{image}, #{introduction},
+        #{detailedIntroduction}, #{salesVolume}, #{createTime}, #{updateTime}, #{status}, #{addedTime});
+    </insert>
+
+    <update id="update" parameterType="Commodity">
+        update commodity set name=#{name}, type_id=#{typeId}, price=#{price}, stock=#{stock}, image=#{image}, introduction=#{introduction},
+        detailed_introduction=#{detailedIntroduction}, sales_volume=#{salesVolume}, create_time=#{createTime}, update_time=#{updateTime},
+        status=#{status}, added_time=#{addedTime};
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from commodity where id=#{id};
+    </delete>
+
+    <select id="select" parameterType="Integer" resultMap="commodity">
+        select * from commodity where id=#{id};
+    </select>
+
+    <select id="selectAll" resultMap="commodity">
+        select * from commodity;
+    </select>
+
+    <select id="selectByType" parameterType="Integer" resultMap="commodity">
+        select * from commodity where type_id = #{_parameter};
+    </select>
+
+    <select id="selectByStatus" parameterType="String" resultMap="commodity">
+        select * from commodity where status = #{_parameter};
+    </select>
+
+    <select id="selectEveryTypeTopThree" resultMap="commodity">
+        select * from commodity c1
+        where 3 > (
+            select COUNT(*) from commodity c2 where c1.type_id = c2.type_id and c2.id > c1.id
+        ) order by type_id, sales_volume desc ;
+    </select>
+
+    <select id="selectTypes" resultType="String">
+        select name from commodity_category where id=#{id};
+    </select>
+</mapper>
