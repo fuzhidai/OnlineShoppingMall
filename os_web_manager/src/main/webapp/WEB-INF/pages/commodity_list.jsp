@@ -55,11 +55,11 @@
                             </c:choose>
                         </td>
                         <td>
-                            <a href="/backstage/commodity/toDetail/${item.id}" style="margin-right: 20px;">详情</a>
-                            <a href="#" style="margin-right: 20px;">修改</a>
+                            <a href="/backstage/commodity/${TYPE}/detail/${item.id}" style="margin-right: 20px;">详情</a>
+                            <a href="/backstage/commodity/${TYPE}/to_edit/${item.id}" style="margin-right: 20px;">修改</a>
                             <c:choose>
-                                <c:when test="${item.status == 'in_stock'}"><a href="#">下架</a></c:when>
-                                <c:when test="${item.status == 'for_sale'}"><a href="#">上架</a></c:when>
+                                <c:when test="${item.status == 'in_stock'}"><a href="/backstage/commodity/${TYPE}/change_status/${item.id}">下架</a></c:when>
+                                <c:when test="${item.status == 'for_sale'}"><a href="/backstage/commodity/${TYPE}/change_status/${item.id}">上架</a></c:when>
                             </c:choose>
                         </td>
                     </tr>

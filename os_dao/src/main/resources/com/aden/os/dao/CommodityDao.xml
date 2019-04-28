@@ -27,7 +27,7 @@
     <update id="update" parameterType="Commodity">
         update commodity set name=#{name}, type_id=#{typeId}, price=#{price}, stock=#{stock}, image=#{image}, introduction=#{introduction},
         detailed_introduction=#{detailedIntroduction}, sales_volume=#{salesVolume}, create_time=#{createTime}, update_time=#{updateTime},
-        status=#{status}, added_time=#{addedTime};
+        status=#{status}, added_time=#{addedTime} where id=#{id};
     </update>
 
     <delete id="delete" parameterType="Integer">

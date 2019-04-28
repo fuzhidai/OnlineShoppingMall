@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aden.os.dao.UserDao">
+    <resultMap id="user" type="User">
+        <id column="id" property="id" javaType="Integer"/>
+        <result column="name" property="name" javaType="String"/>
+        <result column="phone" property="phone" javaType="String"/>
+        <result column="email" property="email" javaType="String"/>
+        <result column="status" property="status" javaType="String"/>
+        <result column="address" property="address" javaType="String"/>
+        <result column="nickname" property="nickname" javaType="String"/>
+        <result column="password" property="password" javaType="String"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="last_login" property="lastLogin" javaType="java.util.Date"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="User">
+        insert into user(name, phone, email, status, address, nickname, password, create_time, last_login)
+        values (#{name}, #{phone}, #{email}, #{status}, #{address}, #{nickname}, #{password}, #{createTime}, #{lastLogin});
+    </insert>
+
+    <update id="update" parameterType="User">
+        update user set name=#{name}, phone=#{phone}, status=#{status}, address=#{address}, nickname=#{nickname}, password=#{password},
+        create_time=#{createTime}, last_login=#{lastLogin}
+        where id=#{id};
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from user where id=#{id};
+    </delete>
+
+    <select id="select" parameterType="Integer" resultMap="user">
+        select * from user where id=#{id};
+    </select>
+
+    <select id="selectByPhone" parameterType="String" resultMap="user">
+        select * from user where phone=#{_parameter};
+    </select>
+
+    <select id="selectAll" resultMap="user">
+        select * from user;
+    </select>
+
+</mapper>

@@ -36,6 +36,19 @@ public class CommodityBizImpl implements CommodityBiz {
         commodityDao.update(commodity);
     }
 
+    public void changeStatus(Integer id) {
+        Commodity commodity = getDetailFromCache(id);
+        commodity.setAddedTime(new Date());
+        commodity.setUpdateTime(new Date());
+
+        if ("in_stock".equals(commodity.getStatus())){
+            commodity.setStatus("for_sale");
+        }else if ("for_sale".equals(commodity.getStatus())){
+            commodity.setStatus("in_stock");
+        }
+        commodityDao.update(commodity);
+    }
+
     public void remove(Integer id) {
         commodityDao.delete(id);
     }
@@ -65,8 +78,13 @@ public class CommodityBizImpl implements CommodityBiz {
     }
 
     public Commodity getDetailFromCache(Integer id){
+
+        if (cache == null){
+            getAll();
+        }
+
         for (Commodity commodity : cache) {
-            if (commodity.getId() == id) {
+            if (commodity.getId() == id.intValue()) {
                 return commodity;
             }
         }

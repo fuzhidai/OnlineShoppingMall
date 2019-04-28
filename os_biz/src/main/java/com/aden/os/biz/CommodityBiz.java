@@ -10,6 +10,8 @@ public interface CommodityBiz {
 
     void edit(Commodity commodity);
 
+    void changeStatus(Integer id);
+
     void remove(Integer id);
 
     Commodity get(Integer id);

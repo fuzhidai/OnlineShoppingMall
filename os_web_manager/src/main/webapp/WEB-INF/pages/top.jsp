@@ -65,14 +65,17 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a href="">会员管理</a></li>
+                <c:choose>
+                    <c:when test="${TYPE=='user_list'}"><li class="active"><a href="/backstage/user/list">会员管理</a></li></c:when>
+                    <c:when test="${TYPE!='user_list'}"><li><a href="/backstage/user/list">会员管理</a></li></c:when>
+                </c:choose>
                 <li><a href="">管理员设置</a></li>
             </ul>
             <ul class="nav nav-sidebar">
 
                 <c:choose>
-                    <c:when test="${TYPE=='add'}"><li class="active"><a href="/backstage/commodity/toAdd">上架商品</a></li></c:when>
-                    <c:when test="${TYPE!='add'}"><li><a href="/backstage/commodity/toAdd">上架商品</a></li></c:when>
+                    <c:when test="${TYPE=='add'}"><li class="active"><a href="/backstage/commodity/to_add">上架商品</a></li></c:when>
+                    <c:when test="${TYPE!='add'}"><li><a href="/backstage/commodity/to_add">上架商品</a></li></c:when>
                 </c:choose>
                 <c:choose>
                     <c:when test="${TYPE=='all'}"><li class="active"><a href="/backstage/commodity/list/all">全部商品</a></li></c:when>
