@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aden.os.dao.CommodityOrderDetailDao">
+    <resultMap id="commodityOrderDetail" type="CommodityOrderDetail">
+        <id column="id" property="id" javaType="Integer"/>
+        <result column="order_id" property="orderId" javaType="Integer"/>
+        <result column="commodity_id" property="commodityId" javaType="Integer"/>
+        <result column="commodity_name" property="commodityName" javaType="String"/>
+        <result column="commodity_price" property="commodityPrice" javaType="Float"/>
+        <result column="commodity_quantity" property="commodityQuantity" javaType="Integer"/>
+        <association column="commodity_id" property="commodity" select="com.aden.os.dao.CommodityDao.select"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="CommodityOrderDetail">
+        insert into commodity_order_detail(order_id, commodity_id, commodity_name, commodity_price, commodity_quantity)
+        values (#{orderId}, #{commodityId}, #{commodityName}, #{commodityPrice}, #{commodityQuantity});
+    </insert>
+
+    <update id="update" parameterType="CommodityOrderDetail">
+        update commodity_order_detail set
+        order_id=#{orderId}, commodity_id=#{commodityid}, commodity_name=#{commodityName}, commodity_price=#{commodityPrice}, commodity_quantity=#{commodityQuantity}
+        where id=#{id};
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from commodity_order_detail where id=#{id};
+    </delete>
+
+    <select id="select" parameterType="Integer" resultMap="commodityOrderDetail">
+        select * from commodity_order_detail where id=#{id};
+    </select>
+
+    <select id="selectByOrderId" parameterType="Integer" resultMap="commodityOrderDetail">
+        select * from commodity_order_detail where order_id=#{orderId};
+    </select>
+
+    <select id="selectAll" resultMap="commodityOrderDetail">
+        select * from commodity_order_detail;
+    </select>
+
+
+</mapper>

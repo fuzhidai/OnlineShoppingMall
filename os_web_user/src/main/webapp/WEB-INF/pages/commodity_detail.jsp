@@ -15,28 +15,37 @@
                 ${DETAIL.introduction}
             </p>
 
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">+</button>
-                        </span>
-                        <input type="text" class="form-control" style="text-align: center;" value="1">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">-</button>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-lg-9"></div>
-            </div>
+            <form action="/order/buy_now" method="post">
 
-            <div>
-                <div class="col-lg-6"></div>
-                <div class="col-lg-1"></div>
-                <button class="btn btn-default col-lg-2" type="submit">立即购买</button>
-                <div class="col-lg-1"></div>
-                <button class="btn btn-default col-lg-2" type="submit">加入购物车</button>
-            </div>
+                <input type="hidden" name="commodityId" value="${DETAIL.id}">
+                <input type="hidden" name="commodityName" value="${DETAIL.name}">
+                <input type="hidden" name="commodityPrice" value="${DETAIL.price}">
+
+
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button id="minus_number_button" class="btn btn-default" type="button">-</button>
+                        </span>
+                            <input id="buy_commodity_count" name="commodityQuantity" type="number" class="form-control" style="text-align: center;" value="1">
+                            <span class="input-group-btn">
+                            <button id="plus_number_button" class="btn btn-default" type="button">+</button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-9"></div>
+                </div>
+
+                <div>
+                    <div class="col-lg-6"></div>
+                    <div class="col-lg-1"></div>
+                    <button class="btn btn-default col-lg-2" type="submit">立即购买</button>
+                    <div class="col-lg-1"></div>
+                    <button class="btn btn-default col-lg-2" type="submit">加入购物车</button>
+                </div>
+
+            </form>
         </div>
         <div class="col-md-5 col-md-pull-7">
             <img class="featurette-image img-responsive center-block" src="test.jpg" alt="Generic placeholder image">
@@ -255,6 +264,18 @@
         $("#mall_detail_list").hide();
         $("#mall_detail").removeClass("active");
     });
+
+    $("#plus_number_button").click(function () {
+        var count = $("#buy_commodity_count").val();
+        $("#buy_commodity_count").val(count+1);
+    });
+
+    $("#minus_number_button").click(function () {
+        var count = $("#buy_commodity_count").val();
+        if (count > 0) {
+            $("#buy_commodity_count").val(count-1);
+        }
+    })
 
 </script>
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aden.os.dao.CommodityOrderDao">
+    <resultMap id="commodityOrder" type="CommodityOrder">
+        <id column="id" property="id" javaType="Integer"/>
+        <result column="user_id" property="userId" javaType="Integer"/>
+        <result column="status" property="status" javaType="String"/>
+        <result column="commodity_quantity" property="commodityQuantity" javaType="Integer"/>
+        <result column="total_amount" property="totalAmount" javaType="Float"/>
+        <result column="waybill_number" property="waybillNumber" javaType="String"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+        <collection property="detailList" column="id" select="com.aden.os.dao.CommodityOrderDetailDao.selectByOrderId"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="CommodityOrder" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into commodity_order(user_id, status, commodity_quantity, total_amount, waybill_number, create_time, update_time)
+        values (#{userId}, #{status}, #{commodityQuantity}, #{totalAmount}, #{waybillNumber}, #{createTime}, #{updateTime});
+    </insert>
+
+    <update id="update" parameterType="CommodityOrder">
+        update commodity_order set user_id=#{userId}, status=#{status}, commodity_quantity=#{commodityQuantity},
+        total_amount=#{totalAmount}, waybill_number=#{waybillNumber}, create_time=#{createTime}, update_time=#{updateTime}
+        where id=#{id};
+    </update>
+    
+    <delete id="delete" parameterType="Integer">
+        delete from commodity_order where id=#{id};
+    </delete>
+
+    <select id="select" parameterType="Integer" resultMap="commodityOrder">
+        select * from commodity_order where id=#{id};
+    </select>
+
+    <select id="selectByUserId" parameterType="Integer" resultMap="commodityOrder">
+        select * from commodity_order where user_id=#{userId};
+    </select>
+
+    <select id="selectAll" resultMap="commodityOrder">
+        select * from commodity_order;
+    </select>
+</mapper>

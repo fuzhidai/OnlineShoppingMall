@@ -1,5 +1,6 @@
 package com.aden.os.controller;
 
+import com.aden.os.biz.OrderBiz;
 import com.aden.os.biz.UserBiz;
 import com.aden.os.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -19,6 +21,8 @@ public class UserController {
 
     @Autowired
     private UserBiz userBiz;
+    @Autowired
+    private OrderBiz orderBiz;
 
     @RequestMapping(value = "/to_registered", method = RequestMethod.GET)
     public String toRegistered(){
@@ -36,10 +40,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/center", method = RequestMethod.GET)
-    public String center(HttpSession session){
-        if (session.getAttribute("user") == null){
+    public String center(HttpSession session, Map<String, Object> model){
+        User user = (User) session.getAttribute("user");
+        if (user == null){
             return "redirect:to_login";
         }
+        Integer userId = user.getId();
+        model.put("LIST", orderBiz.getByUserId(userId));
         return "user_center";
     }
 
