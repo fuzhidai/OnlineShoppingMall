@@ -14,6 +14,7 @@ public class UserBizImpl implements UserBiz {
 
     @Autowired
     private UserDao userDao;
+    private List<User> cache;
 
     public void add(User user) {
 
@@ -26,6 +27,19 @@ public class UserBizImpl implements UserBiz {
     }
 
     public void edit(User user) {
+        userDao.update(user);
+    }
+
+    public void changePassword(String phone, String password) {
+        User user = userDao.selectByPhone(phone);
+        user.setPassword(password);
+        userDao.update(user);
+    }
+
+    public void changeStatus(Integer id, String status) {
+        User user = getDetailFromCache(id);
+
+        user.setStatus(status);
         userDao.update(user);
     }
 
@@ -44,11 +58,30 @@ public class UserBizImpl implements UserBiz {
     }
 
     public User get(Integer id) {
-        return userDao.select(id);
+        User user = getDetailFromCache(id);
+        if (user == null){
+            userDao.select(id);
+        }
+        return user;
+    }
+
+    public User getDetailFromCache(Integer id) {
+
+        if (cache == null){
+            getAll();
+        }
+
+        for (User user : cache) {
+            if (user.getId() == id.intValue()) {
+                return user;
+            }
+        }
+        return null;
     }
 
     public List<User> getAll() {
-        return userDao.selectAll();
+        cache = userDao.selectAll();
+        return cache;
     }
 
 

@@ -5,7 +5,7 @@
 <div class="container marketing">
 
     <div class="page-header" style="margin-top: 10%;">
-        <h1>个人中心<small style="float: right; margin-top: 2%; font-size: medium;">编辑资料</small></h1>
+        <h1>个人中心<small style="float: right; margin-top: 2%; font-size: medium;"><a href="/user/to_edit">编辑资料</a></small></h1>
     </div>
 
     <div class="featurette">
@@ -82,7 +82,6 @@
     </ul>
 
     <div style="height: 110px;"></div>
-
 
     <div id="to_be_delivered_list">
         <div class="table-responsive">

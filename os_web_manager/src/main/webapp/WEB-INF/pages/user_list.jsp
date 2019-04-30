@@ -33,6 +33,7 @@
                             <c:choose>
                                 <c:when test="${item.status == 'normal'}">正常</c:when>
                                 <c:when test="${item.status == 'lock'}">锁定</c:when>
+                                <c:when test="${item.status == 'delete'}">已删除</c:when>
                             </c:choose>
                         </td>
                         <td>${item.phone}</td>
@@ -40,14 +41,25 @@
                         <td><fmt:formatDate value="${item.lastLogin}" pattern="yyyy-MM-dd HH:mm"/></td>
                         <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
                         <td>
-                            <a href="#" style="margin-right: 20px;">详情</a>
-                            <a href="#" style="margin-right: 20px;">
-                                <c:choose>
-                                    <c:when test="${item.status == 'normal'}">锁定</c:when>
-                                    <c:when test="${item.status == 'lock'}">解锁</c:when>
-                                </c:choose>
-                            </a>
-                            <a href="#">删除</a>
+                            <a href="/backstage/user/detail/${item.id}" style="margin-right: 20px;">详情</a>
+
+                            <c:choose>
+                                <c:when test="${item.status == 'normal'}">
+                                    <a href="/backstage/user/change_status/${item.id}/lock" style="margin-right: 20px;">锁定</a>
+                                </c:when>
+                                <c:when test="${item.status == 'lock'}">
+                                    <a href="/backstage/user/change_status/${item.id}/normal" style="margin-right: 20px;">解锁</a>
+                                </c:when>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${item.status == 'delete'}">
+                                    <a href="/backstage/user/change_status/${item.id}/normal" style="margin-right: 20px;">恢复</a>
+                                </c:when>
+                                <c:when test="${item.status != 'delete'}">
+                                    <a href="/backstage/user/change_status/${item.id}/delete" style="margin-right: 20px;">删除</a>
+                                </c:when>
+                            </c:choose>
+                            <a href="#"></a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -56,3 +68,5 @@
         </div>
     </div>
 </div>
+
+<jsp:include page="bottom.jsp"/>

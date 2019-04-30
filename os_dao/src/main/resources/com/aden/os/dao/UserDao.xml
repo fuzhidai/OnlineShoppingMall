@@ -20,7 +20,7 @@
     </insert>
 
     <update id="update" parameterType="User">
-        update user set name=#{name}, phone=#{phone}, status=#{status}, address=#{address}, nickname=#{nickname}, password=#{password},
+        update user set name=#{name}, phone=#{phone}, email=#{email}, status=#{status}, address=#{address}, nickname=#{nickname}, password=#{password},
         create_time=#{createTime}, last_login=#{lastLogin}
         where id=#{id};
     </update>

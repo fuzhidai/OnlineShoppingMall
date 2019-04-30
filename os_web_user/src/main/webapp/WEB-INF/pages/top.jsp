@@ -70,6 +70,7 @@
                                     </ul>
                                 </li>
                                 <li><a href="#contact">购物车</a></li>
+                                <li><a href="/user/logout">退出登陆</a></li>
                             </c:when>
                         </c:choose>
                     </ul>

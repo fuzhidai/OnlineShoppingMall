@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
 
@@ -29,6 +30,11 @@ public class UserController {
         return "user_login";
     }
 
+    @RequestMapping(value = "/to_edit", method = RequestMethod.GET)
+    public String toEdit(){
+        return "user_edit";
+    }
+
     @RequestMapping(value = "/center", method = RequestMethod.GET)
     public String center(HttpSession session){
         if (session.getAttribute("user") == null){
@@ -47,9 +53,44 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@RequestParam("phone") String phone, @RequestParam("password") String password, HttpSession session){
         User user = userBiz.verifyInfo(phone, password);
+
+        if(user == null){
+            return "redirect:to_login";
+        }
         session.setAttribute("user", user);
         return "redirect:/commodity/homepage";
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String signOut(HttpSession session, SessionStatus sessionStatus){
+        session.removeAttribute("user");
+        sessionStatus.setComplete();
+        return "redirect:to_login";
+    }
 
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String edit(User inputUser, HttpSession session){
+
+        User user = (User) session.getAttribute("user");
+
+        user.setName(inputUser.getName());
+        user.setNickname(inputUser.getNickname());
+        user.setEmail(inputUser.getEmail());
+        user.setAddress(inputUser.getAddress());
+        userBiz.edit(user);
+
+        session.setAttribute("user", user);
+
+        return "redirect:center";
+    }
+
+    @RequestMapping(value = "/change_password", method = RequestMethod.POST)
+    public String changePassword(@RequestParam("phone") String phone, @RequestParam("password") String password, HttpSession session){
+        userBiz.changePassword(phone, password);
+        User user = (User) session.getAttribute("user");
+        user.setPassword(password);
+        session.setAttribute("user", user);
+
+        return "redirect:to_login";
+    }
 }
