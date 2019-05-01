@@ -50,6 +50,10 @@
                 <h3>订单记录</h3>
             </div>
             <div class="col-lg-2">
+                <h5>待支付</h5>
+                <h3><span>8件</span></h3>
+            </div>
+            <div class="col-lg-2">
                 <h5>待发货</h5>
                 <h3><span>12件</span></h3>
             </div>
@@ -75,7 +79,8 @@
 
 
     <ul class="nav nav-tabs col-lg-12" style="margin-top: 5%;">
-        <li role="presentation" class="active" id="to_be_delivered"><a>代发货</a></li>
+        <li role="presentation" class="active" id="to_be_paid"><a>代支付</a></li>
+        <li role="presentation" id="to_be_delivered"><a>代发货</a></li>
         <li role="presentation" id="pending_receipt"><a>待收货</a></li>
         <li role="presentation" id="comment"><a>待评价</a></li>
         <li role="presentation" id="refund_and_after_sale"><a>退款/售后</a></li>
@@ -84,7 +89,54 @@
 
     <div style="height: 110px;"></div>
 
-    <div id="to_be_delivered_list">
+    <div id="to_be_paid_list">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>订单编号</th>
+                    <th>订单状态</th>
+                    <th>订单金额</th>
+                    <th>运单号码</th>
+                    <th>创建时间</th>
+                    <th>最后更新</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <c:forEach items="${LIST}" var="item">
+                    <c:if test="${item.status == 'to_be_paid'}">
+                        <tr>
+                            <td>${item.id}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${item.status == 'to_be_paid'}">待支付</c:when>
+                                </c:choose>
+                            </td>
+                            <td>￥ ${item.totalAmount}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${item.waybillNumber == null}">暂未发货</c:when>
+                                    <c:when test="${item.waybillNumber != null}">${item.waybillNumber}</c:when>
+                                </c:choose>
+                            </td>
+                            <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                            <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                            <td>
+                                <a href="/order/to_pay/${item.id}" style="margin-right: 20px;">支付</a>
+                                <a href="#" style="margin-right: 20px;">取消</a>
+                            </td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="to_be_delivered_list" style="display: none">
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -676,6 +728,26 @@
 
 <script>
 
+    $("#to_be_paid").click(function(){
+        $("#to_be_delivered_list").hide();
+        $("#to_be_delivered").removeClass("active");
+
+        $("#pending_receipt_list").hide();
+        $("#pending_receipt").removeClass("active");
+
+        $("#comment_list").hide();
+        $("#comment").removeClass("active");
+
+        $("#refund_and_after_sale_list").hide();
+        $("#refund_and_after_sale").removeClass("active");
+
+        $("#all_orders_list").hide();
+        $("#all_orders").removeClass("active");
+
+        $("#to_be_paid_list").show();
+        $("#to_be_paid").addClass("active");
+    });
+
     $("#to_be_delivered").click(function(){
         $("#to_be_delivered_list").show();
         $("#to_be_delivered").addClass("active");
@@ -691,6 +763,9 @@
 
         $("#all_orders_list").hide();
         $("#all_orders").removeClass("active");
+
+        $("#to_be_paid_list").hide();
+        $("#to_be_paid").removeClass("active");
     });
 
     $("#pending_receipt").click(function(){
@@ -708,6 +783,9 @@
 
         $("#all_orders_list").hide();
         $("#all_orders").removeClass("active");
+
+        $("#to_be_paid_list").hide();
+        $("#to_be_paid").removeClass("active");
     });
 
     $("#comment").click(function(){
@@ -725,6 +803,9 @@
 
         $("#all_orders_list").hide();
         $("#all_orders").removeClass("active");
+
+        $("#to_be_paid_list").hide();
+        $("#to_be_paid").removeClass("active");
     });
 
     $("#refund_and_after_sale").click(function(){
@@ -742,6 +823,9 @@
 
         $("#all_orders_list").hide();
         $("#all_orders").removeClass("active");
+
+        $("#to_be_paid_list").hide();
+        $("#to_be_paid").removeClass("active");
     });
 
     $("#all_orders").click(function(){
@@ -759,6 +843,9 @@
 
         $("#all_orders_list").show();
         $("#all_orders").addClass("active");
+
+        $("#to_be_paid_list").hide();
+        $("#to_be_paid").removeClass("active");
     });
 
 

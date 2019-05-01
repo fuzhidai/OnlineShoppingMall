@@ -15,11 +15,12 @@
                 ${DETAIL.introduction}
             </p>
 
-            <form action="/order/buy_now" method="post">
+            <form action="/order/buy" method="post">
 
                 <input type="hidden" name="commodityId" value="${DETAIL.id}">
                 <input type="hidden" name="commodityName" value="${DETAIL.name}">
                 <input type="hidden" name="commodityPrice" value="${DETAIL.price}">
+                <input type="hidden" id="type" name="type">
 
 
                 <div class="row">
@@ -40,9 +41,9 @@
                 <div>
                     <div class="col-lg-6"></div>
                     <div class="col-lg-1"></div>
-                    <button class="btn btn-default col-lg-2" type="submit">立即购买</button>
+                    <button id="buy_now_btn" class="btn btn-default col-lg-2" type="submit">立即购买</button>
                     <div class="col-lg-1"></div>
-                    <button class="btn btn-default col-lg-2" type="submit">加入购物车</button>
+                    <button id="add_cart_btn" class="btn btn-default col-lg-2" type="submit">加入购物车</button>
                 </div>
 
             </form>
@@ -231,6 +232,14 @@
 
 <script>
 
+    $("#buy_now_btn").click(function () {
+        $("#type").val("now");
+    });
+
+    $("#add_cart_btn").click(function () {
+        $("#type").val("cart");
+    });
+
     $("#mall_detail").click(function(){
         $("#mall_detail_list").show();
         $("#mall_detail").addClass("active");
@@ -266,12 +275,12 @@
     });
 
     $("#plus_number_button").click(function () {
-        var count = $("#buy_commodity_count").val();
+        var count = parseInt($("#buy_commodity_count").val());
         $("#buy_commodity_count").val(count+1);
     });
 
     $("#minus_number_button").click(function () {
-        var count = $("#buy_commodity_count").val();
+        var count = parseInt($("#buy_commodity_count").val());
         if (count > 0) {
             $("#buy_commodity_count").val(count-1);
         }

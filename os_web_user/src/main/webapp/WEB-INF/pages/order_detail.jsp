@@ -70,7 +70,7 @@
                     <tr>
                         <td>${item.commodityName}</td>
                         <td>￥ ${item.commodityPrice}</td>
-                        <td>${item.commodityQuantity}</td>
+                        <td>${item.commodityQuantity} 件</td>
                         <td>￥ <fmt:formatNumber value="${item.commodityPrice * item.commodityQuantity}" pattern="#0.00"/></td>
                         <td>
                             <a href="/commodity/detail/${item.commodityId}">查看详情</a>

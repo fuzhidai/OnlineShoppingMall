@@ -31,6 +31,14 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/mall_homepage.css" rel="stylesheet">
+
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0;
+        }
+    </style>
 </head>
 
 <!-- NAVBAR
@@ -52,6 +60,7 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse" style="float: right">
                     <ul class="nav navbar-nav">
+                        <li><a href="/commodity/homepage">首页</a></li>
                         <c:choose>
                             <c:when test="${sessionScope.user == null}">
                                 <li><a href="/user/to_login">登陆</a></li>
@@ -69,7 +78,7 @@
                                         <li><a href="#">全部订单</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#contact">购物车</a></li>
+                                <li><a href="/order/cart">购物车</a></li>
                                 <li><a href="/user/logout">退出登陆</a></li>
                             </c:when>
                         </c:choose>

@@ -32,6 +32,10 @@
         select * from commodity_order where id=#{id};
     </select>
 
+    <select id="selectByUserIdAndStatus" resultMap="commodityOrder">
+        select * from commodity_order where user_id=#{param1} and status=#{param2};
+    </select>
+
     <select id="selectByUserId" parameterType="Integer" resultMap="commodityOrder">
         select * from commodity_order where user_id=#{userId};
     </select>

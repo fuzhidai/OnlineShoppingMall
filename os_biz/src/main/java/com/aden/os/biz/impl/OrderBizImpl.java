@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service("orderBiz")
 public class OrderBizImpl implements OrderBiz {
@@ -21,8 +20,6 @@ public class OrderBizImpl implements OrderBiz {
     @Autowired
     private CommodityOrderDetailDao commodityOrderDetailDao;
 
-    private ConcurrentHashMap<Integer, CommodityOrder> commodityOrders = new ConcurrentHashMap<Integer, CommodityOrder>();
-
     public void add(CommodityOrder commodityOrder) {
         commodityOrderDao.insert(commodityOrder);
     }
@@ -31,29 +28,36 @@ public class OrderBizImpl implements OrderBiz {
         commodityOrderDao.update(commodityOrder);
     }
 
-    public void buyNow(CommodityOrderDetail commodityOrderDetail, Integer userId) {
+    public Integer buyNow(CommodityOrderDetail commodityOrderDetail, Integer userId) {
 
         addToShoppingCart(commodityOrderDetail, userId);
         settlement(userId);
+        return commodityOrderDao.selectByUserIdAndStatus(userId, "to_be_paid").getId();
     }
 
     public void addToShoppingCart(CommodityOrderDetail commodityOrderDetail, Integer userId) {
 
-        // 根据当前用户的编号从缓存的订单列表中查找当前用户的订单
-        CommodityOrder commodityOrder = commodityOrders.get(userId);
+        // 根据当前用户的编号从数据库中查找该用户的待结算订单
+        CommodityOrder commodityOrder = commodityOrderDao.selectByUserIdAndStatus(userId, "pending_settlement");
 
-        // 如果当前缓存中未存在用户对应的订单则为其创建新的订单
+        // 如果当前数据库中不存在用户的待结算订单则创建
         if (commodityOrder == null){
 
+            Date currentTime = new Date();
             commodityOrder = new CommodityOrder();
+
+            // 订单初始状态为待结算
+            commodityOrder.setStatus("pending_settlement");
             commodityOrder.setUserId(userId);
             commodityOrder.setTotalAmount(0f);
             commodityOrder.setCommodityQuantity(0);
             commodityOrder.setWaybillNumber(null);
             commodityOrder.setDetailList(new ArrayList<CommodityOrderDetail>());
+            commodityOrder.setCreateTime(currentTime);
+            commodityOrder.setUpdateTime(currentTime);
 
-            // 订单初始状态为待结算
-            commodityOrder.setStatus("pending_settlement");
+            // 插入数据库
+            add(commodityOrder);
         }
 
         // 计算加上当前这笔订单明细后订单的总金额
@@ -64,37 +68,47 @@ public class OrderBizImpl implements OrderBiz {
         Integer commodityQuantity = commodityOrder.getCommodityQuantity() + commodityOrderDetail.getCommodityQuantity();
         commodityOrder.setCommodityQuantity(commodityQuantity);
 
-        // 将当前订单明细保存到订单中
-        List<CommodityOrderDetail> commodityOrderDetails = commodityOrder.getDetailList();
-        commodityOrderDetails.add(commodityOrderDetail);
-        commodityOrder.setDetailList(commodityOrderDetails);
+        // 将当前的订单明细插入数据库中
+        addDetails(commodityOrderDetail, commodityOrder.getId());
 
-        // 更新数据后存回缓存中
-        commodityOrders.put(userId, commodityOrder);
+        // 更新数据库中的当前订单数据
+        edit(commodityOrder);
     }
 
     public void settlement(Integer userId) {
 
-        // 根据当前用户的编号从缓存的订单列表中查找当前用户的订单
-        CommodityOrder commodityOrder = commodityOrders.get(userId);
+        // 根据当前用户的编号从数据库中查找该用户的待结算订单
+        CommodityOrder commodityOrder = commodityOrderDao.selectByUserIdAndStatus(userId, "pending_settlement");
         if (commodityOrder == null){
             return;
         }
 
-        // 修改订单状态为已结算
-        commodityOrder.setStatus("paid");
+        // 修改订单状态为已结算且待支付
+        commodityOrder.setStatus("to_be_paid");
 
-        // 为订单的创建和更新时间进行赋值
+        // 更新订单的创建和更新时间
         Date currentTime = new Date();
         commodityOrder.setCreateTime(currentTime);
         commodityOrder.setUpdateTime(currentTime);
 
         // 将当前订单保存至数据库中
-        add(commodityOrder);
-        addDetails(commodityOrder.getDetailList(), commodityOrder.getId());
+        edit(commodityOrder);
+    }
 
-        // 清空当前用户的订单缓存数据
-        commodityOrders.remove(userId);
+    public void pay(Integer orderId) {
+
+        // 根据当前用户的编号从数据库中查找该用户的待结算订单
+        CommodityOrder commodityOrder = get(orderId);
+        if (commodityOrder == null){
+            return;
+        }
+
+        // 修改订单状态为已支付
+        commodityOrder.setStatus("paid");
+        commodityOrder.setUpdateTime(new Date());
+
+        // 将当前订单保存至数据库中
+        edit(commodityOrder);
     }
 
     public void remove(Integer id) {
@@ -105,6 +119,10 @@ public class OrderBizImpl implements OrderBiz {
         return commodityOrderDao.select(id);
     }
 
+    public CommodityOrder getCart(Integer userId) {
+        return commodityOrderDao.selectByUserIdAndStatus(userId, "pending_settlement");
+    }
+
     public List<CommodityOrder> getByUserId(Integer userId) {
         return commodityOrderDao.selectByUserId(userId);
     }
@@ -113,11 +131,8 @@ public class OrderBizImpl implements OrderBiz {
         return commodityOrderDao.selectAll();
     }
 
-    private void addDetails(List<CommodityOrderDetail> commodityOrderDetails, Integer orderId){
-
-        for (CommodityOrderDetail commodityOrderDetail : commodityOrderDetails) {
-            commodityOrderDetail.setOrderId(orderId);
-            commodityOrderDetailDao.insert(commodityOrderDetail);
-        }
+    private void addDetails(CommodityOrderDetail commodityOrderDetail, Integer orderId){
+        commodityOrderDetail.setOrderId(orderId);
+        commodityOrderDetailDao.insert(commodityOrderDetail);
     }
 }

@@ -11,15 +11,19 @@ public interface OrderBiz {
 
     void edit(CommodityOrder commodityOrder);
 
-    void buyNow(CommodityOrderDetail commodityOrderDetail, Integer userId);
+    Integer buyNow(CommodityOrderDetail commodityOrderDetail, Integer userId);
 
     void addToShoppingCart(CommodityOrderDetail commodityOrderDetail, Integer userId);
 
     void settlement(Integer userId);
 
+    void pay(Integer orderId);
+
     void remove(Integer id);
 
     CommodityOrder get(Integer id);
+
+    CommodityOrder getCart(Integer userId);
 
     List<CommodityOrder> getByUserId(Integer userId);
 
