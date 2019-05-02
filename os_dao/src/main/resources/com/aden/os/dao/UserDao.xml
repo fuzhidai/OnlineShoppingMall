@@ -3,6 +3,7 @@
 <mapper namespace="com.aden.os.dao.UserDao">
     <resultMap id="user" type="User">
         <id column="id" property="id" javaType="Integer"/>
+        <result column="permission" property="permission" javaType="Integer"/>
         <result column="name" property="name" javaType="String"/>
         <result column="phone" property="phone" javaType="String"/>
         <result column="email" property="email" javaType="String"/>
@@ -15,13 +16,13 @@
     </resultMap>
 
     <insert id="insert" parameterType="User">
-        insert into user(name, phone, email, status, address, nickname, password, create_time, last_login)
-        values (#{name}, #{phone}, #{email}, #{status}, #{address}, #{nickname}, #{password}, #{createTime}, #{lastLogin});
+        insert into user(name, phone, email, status, address, nickname, password, create_time, last_login, permission)
+        values (#{name}, #{phone}, #{email}, #{status}, #{address}, #{nickname}, #{password}, #{createTime}, #{lastLogin}, #{permission});
     </insert>
 
     <update id="update" parameterType="User">
         update user set name=#{name}, phone=#{phone}, email=#{email}, status=#{status}, address=#{address}, nickname=#{nickname}, password=#{password},
-        create_time=#{createTime}, last_login=#{lastLogin}
+        create_time=#{createTime}, last_login=#{lastLogin}, permission=#{permission}
         where id=#{id};
     </update>
 
@@ -35,6 +36,10 @@
 
     <select id="selectByPhone" parameterType="String" resultMap="user">
         select * from user where phone=#{_parameter};
+    </select>
+
+    <select id="selectByPermissionHigher" parameterType="Integer" resultMap="user">
+        select * from user where permission > #{_parameter};
     </select>
 
     <select id="selectAll" resultMap="user">

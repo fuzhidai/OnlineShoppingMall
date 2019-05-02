@@ -66,10 +66,13 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <c:choose>
-                    <c:when test="${TYPE=='user_list'}"><li class="active"><a href="/backstage/user/list">会员管理</a></li></c:when>
-                    <c:when test="${TYPE!='user_list'}"><li><a href="/backstage/user/list">会员管理</a></li></c:when>
+                    <c:when test="${TYPE=='member'}"><li class="active"><a href="/backstage/user/member/list">会员管理</a></li></c:when>
+                    <c:when test="${TYPE!='member'}"><li><a href="/backstage/user/member/list">会员管理</a></li></c:when>
                 </c:choose>
-                <li><a href="">管理员设置</a></li>
+                <c:choose>
+                    <c:when test="${TYPE=='administrator'}"><li class="active"><a href="/backstage/user/administrator/list">管理员管理</a></li></c:when>
+                    <c:when test="${TYPE!='administrator'}"><li><a href="/backstage/user/administrator/list">管理员管理</a></li></c:when>
+                </c:choose>
             </ul>
             <ul class="nav nav-sidebar">
 
@@ -94,9 +97,26 @@
                 <li><a href="#">商品数据分析</a></li>
             </ul>
             <ul class="nav nav-sidebar">
-                <li><a href="">未处理订单</a></li>
-                <li><a href="">已处理订单</a></li>
-                <li><a href="">全部订单数据</a></li>
+                <c:choose>
+                    <c:when test="${TYPE=='all_orders'}"><li class="active"><a href="/backstage/order/list/all">全部订单</a></li></c:when>
+                    <c:when test="${TYPE!='all_orders'}"><li><a href="/backstage/order/list/all">全部订单</a></li></c:when>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${TYPE=='to_be_delivered'}"><li class="active"><a href="/backstage/order/list/to_be_delivered">待发货订单</a></li></c:when>
+                    <c:when test="${TYPE!='to_be_delivered'}"><li><a href="/backstage/order/list/to_be_delivered">待发货订单</a></li></c:when>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${TYPE=='pending_receipt'}"><li class="active"><a href="/backstage/order/list/pending_receipt">待收货订单</a></li></c:when>
+                    <c:when test="${TYPE!='pending_receipt'}"><li><a href="/backstage/order/list/pending_receipt">待收货订单</a></li></c:when>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${TYPE=='to_be_commented'}"><li class="active"><a href="/backstage/order/list/to_be_commented">待评价订单</a></li></c:when>
+                    <c:when test="${TYPE!='to_be_commented'}"><li><a href="/backstage/order/list/to_be_commented">待评价订单</a></li></c:when>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${TYPE=='completed'}"><li class="active"><a href="/backstage/order/list/completed">已完成订单</a></li></c:when>
+                    <c:when test="${TYPE!='completed'}"><li><a href="/backstage/order/list/completed">已完成订单</a></li></c:when>
+                </c:choose>
                 <li><a href="">订单数据分析</a></li>
             </ul>
         </div>

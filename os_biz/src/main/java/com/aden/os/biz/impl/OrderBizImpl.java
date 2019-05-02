@@ -32,6 +32,14 @@ public class OrderBizImpl implements OrderBiz {
         commodityOrderDao.update(commodityOrder);
     }
 
+    public void deliver(Integer orderId, String waybillNumber) {
+        CommodityOrder commodityOrder = get(orderId);
+        commodityOrder.setWaybillNumber(waybillNumber);
+        commodityOrder.setStatus("pending_receipt");
+        commodityOrder.setUpdateTime(new Date());
+        edit(commodityOrder);
+    }
+
     public Integer buyNow(CommodityOrderDetail commodityOrderDetail, Integer userId) {
 
         Integer orderId = addToShoppingCart(commodityOrderDetail, userId);
@@ -92,7 +100,7 @@ public class OrderBizImpl implements OrderBiz {
         }
 
         // 修改订单状态为已支付
-        commodityOrder.setStatus("paid");
+        commodityOrder.setStatus("to_be_delivered");
         // 付款成功后更新数据库中商品的销量
         increaseCommoditySalesVolume(commodityOrder);
         // 更新最后订单最后操作时间
@@ -115,13 +123,24 @@ public class OrderBizImpl implements OrderBiz {
         return getOrderCart(userId);
     }
 
-    public List<CommodityOrder> getOrderList(Integer userId, String type) {
+    public List<CommodityOrder> getOrderListByStatus(String status) {
 
         List<CommodityOrder> commodityOrderList;
-        if ("all".equals(type)){
+        if ("all".equals(status)){
             commodityOrderList = commodityOrderDao.selectAll();
         }else{
-            commodityOrderList = commodityOrderDao.selectByUserIdAndStatus(userId, type);
+            commodityOrderList = commodityOrderDao.selectByStatus(status);
+        }
+        return commodityOrderList;
+    }
+
+    public List<CommodityOrder> getOrderList(Integer userId, String status) {
+
+        List<CommodityOrder> commodityOrderList;
+        if ("all".equals(status)){
+            commodityOrderList = commodityOrderDao.selectAll();
+        }else{
+            commodityOrderList = commodityOrderDao.selectByUserIdAndStatus(userId, status);
         }
         return commodityOrderList;
     }

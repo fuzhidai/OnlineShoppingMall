@@ -22,5 +22,7 @@ public interface UserBiz {
 
     User getDetailFromCache(Integer id);
 
+    List<User> getByIdentity(String identity);
+
     List<User> getAll();
 }

@@ -19,7 +19,7 @@
                 <h5>状态</h5>
                 <h4><span>
                     <c:choose>
-                        <c:when test="${DETAIL.status == 'paid'}">待发货</c:when>
+                        <c:when test="${DETAIL.status == 'to_be_delivered'}">待发货</c:when>
                     </c:choose>
                 </span></h4>
             </div>
@@ -89,7 +89,7 @@
 
     <div class="row" style="margin-top: 5%;">
         <div class="page-header">
-            <h3>订单处理情况</h3>
+            <h3>订单处理记录</h3>
         </div>
         <h2 class="sub-header"></h2>
         <div class="table-responsive">

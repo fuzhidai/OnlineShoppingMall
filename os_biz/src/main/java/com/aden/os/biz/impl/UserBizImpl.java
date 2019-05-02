@@ -22,6 +22,7 @@ public class UserBizImpl implements UserBiz {
         user.setCreateTime(date);
         user.setLastLogin(date);
         user.setStatus("normal");
+        user.setPermission(1);
 
         userDao.insert(user);
     }
@@ -77,6 +78,16 @@ public class UserBizImpl implements UserBiz {
             }
         }
         return null;
+    }
+
+    public List<User> getByIdentity(String identity) {
+        List<User> userList;
+        if ("member".equals(identity)){
+            userList = getAll();
+        }else{
+            userList = userDao.selectByPermissionHigher(1);
+        }
+        return userList;
     }
 
     public List<User> getAll() {

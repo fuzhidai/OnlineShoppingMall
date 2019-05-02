@@ -93,13 +93,13 @@
                         <td>${item.quantity} 件</td>
                         <td>
                             <c:choose>
-                                <c:when test="${item.status == 'paid'}">待发货</c:when>
+                                <c:when test="${item.status == 'to_be_delivered'}">待发货</c:when>
                             </c:choose>
                         </td>
                         <td><fmt:formatDate value="${item.time}" pattern="yyyy-MM-dd HH:mm"/></td>
                         <td>
                             <c:choose>
-                                <c:when test="${item.status == 'paid'}">暂未评价</c:when>
+                                <c:when test="${item.status == 'to_be_delivered'}">暂未评价</c:when>
                             </c:choose>
                         </td>
                     </tr>

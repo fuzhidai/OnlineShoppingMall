@@ -11,6 +11,8 @@ public interface OrderBiz {
 
     void edit(CommodityOrder commodityOrder);
 
+    void deliver(Integer orderId, String waybillNumber);
+
     Integer buyNow(CommodityOrderDetail commodityOrderDetail, Integer userId);
 
     Integer addToShoppingCart(CommodityOrderDetail commodityOrderDetail, Integer userId);
@@ -25,7 +27,9 @@ public interface OrderBiz {
 
     CommodityOrder getCart(Integer userId);
 
-    List<CommodityOrder> getOrderList(Integer userId, String type);
+    List<CommodityOrder> getOrderListByStatus(String status);
+
+    List<CommodityOrder> getOrderList(Integer userId, String status);
 
     List<CommodityOrder> getByUserId(Integer userId);
 

@@ -40,6 +40,10 @@
         select * from commodity_order where user_id=#{userId};
     </select>
 
+    <select id="selectByStatus" resultMap="commodityOrder">
+        select * from commodity_order where status=#{param1};
+    </select>
+
     <select id="selectAll" resultMap="commodityOrder">
         select * from commodity_order;
     </select>

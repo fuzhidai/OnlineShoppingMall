@@ -10,7 +10,7 @@
             <c:choose>
                 <c:when test="${TYPE == 'all'}">全部</c:when>
                 <c:when test="${TYPE == 'to_be_paid'}">待支付</c:when>
-                <c:when test="${TYPE == 'paid'}">待发货</c:when>
+                <c:when test="${TYPE == 'to_be_delivered'}">待发货</c:when>
             </c:choose>
             订单
         </h1>
@@ -38,7 +38,7 @@
                         <td>
                             <c:choose>
                                 <c:when test="${item.status == 'to_be_paid'}">待支付</c:when>
-                                <c:when test="${item.status == 'paid'}">待发货</c:when>
+                                <c:when test="${item.status == 'to_be_delivered'}">待发货</c:when>
                             </c:choose>
                         </td>
                         <td>￥ ${item.totalAmount}</td>
@@ -60,7 +60,7 @@
                                         <input type="hidden" name="id" value="${item.id}">
                                     </form>
                                 </c:when>
-                                <c:when test="${item.status == 'paid'}">
+                                <c:when test="${item.status == 'to_be_delivered'}">
                                     <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
                                     <a href="#" style="margin-right: 20px;">催单</a>
                                 </c:when>

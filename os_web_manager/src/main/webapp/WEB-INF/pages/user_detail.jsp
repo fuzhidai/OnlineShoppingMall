@@ -49,6 +49,10 @@
 
         <div class="row">
             <div class="col-lg-4">
+                <h5>权限</h5>
+                <h4 class="subtext">${DETAIL.permission} 级</h4>
+            </div>
+            <div class="col-lg-4">
                 <h5>创建时间</h5>
                 <h4 class="subtext"><fmt:formatDate value="${DETAIL.createTime}" pattern="yyyy-MM-dd HH:mm"/></h4>
             </div>

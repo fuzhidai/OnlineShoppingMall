@@ -15,6 +15,28 @@
 
 <script>
 
+    $("#input_waybillNumber_btn").click(function () {
+        $("#page_title").val("填写运单号");
+        $("#make_sure_info").hide();
+        $("#input_waybillNumber").show();
+    });
+
+    $("#order_commodity_info").click(function () {
+        $("#order_commodity_info_list").show();
+        $("#order_commodity_info").addClass("active");
+
+        $("#order_deal_record_list").hide();
+        $("#order_deal_record").removeClass("active");
+    });
+
+    $("#order_deal_record").click(function () {
+        $("#order_commodity_info_list").hide();
+        $("#order_commodity_info").removeClass("active");
+
+        $("#order_deal_record_list").show();
+        $("#order_deal_record").addClass("active");
+    });
+
     $("#to_be_delivered").click(function(){
         $("#to_be_delivered_list").show();
         $("#to_be_delivered").addClass("active");

@@ -5,6 +5,7 @@ import java.util.Date;
 public class User {
 
     private Integer id;
+    private Integer permission;
     private String name;
     private String phone;
     private String email;
@@ -21,6 +22,14 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Integer permission) {
+        this.permission = permission;
     }
 
     public String getName() {

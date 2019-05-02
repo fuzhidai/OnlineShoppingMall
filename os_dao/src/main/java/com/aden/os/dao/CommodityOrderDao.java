@@ -20,5 +20,7 @@ public interface CommodityOrderDao {
 
     List<CommodityOrder> selectByUserId(Integer userId);
 
+    List<CommodityOrder> selectByStatus(String status);
+
     List<CommodityOrder> selectAll();
 }

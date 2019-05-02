@@ -157,12 +157,12 @@
                 <tbody>
 
                 <c:forEach items="${LIST}" var="item">
-                    <c:if test="${item.status == 'paid'}">
+                    <c:if test="${item.status == 'to_be_delivered'}">
                         <tr>
                             <td>${item.id}</td>
                             <td>
                                 <c:choose>
-                                    <c:when test="${item.status == 'paid'}">待发货</c:when>
+                                    <c:when test="${item.status == 'to_be_delivered'}">待发货</c:when>
                                 </c:choose>
                             </td>
                             <td>￥ ${item.totalAmount}</td>
