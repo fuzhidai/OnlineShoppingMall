@@ -13,7 +13,7 @@ public interface OrderBiz {
 
     Integer buyNow(CommodityOrderDetail commodityOrderDetail, Integer userId);
 
-    void addToShoppingCart(CommodityOrderDetail commodityOrderDetail, Integer userId);
+    Integer addToShoppingCart(CommodityOrderDetail commodityOrderDetail, Integer userId);
 
     void settlement(Integer userId);
 
@@ -25,7 +25,11 @@ public interface OrderBiz {
 
     CommodityOrder getCart(Integer userId);
 
+    List<CommodityOrder> getOrderList(Integer userId, String type);
+
     List<CommodityOrder> getByUserId(Integer userId);
+
+    List<CommodityOrderDetail> getCommoditySalesRecord(Integer commodityId);
 
     List<CommodityOrder> getAll();
 }

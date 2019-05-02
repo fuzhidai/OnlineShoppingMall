@@ -22,12 +22,8 @@ public class OrderController {
     private OrderBiz orderBiz;
 
     @RequestMapping(value = "/buy", method = RequestMethod.POST)
-    public String buyNow(@RequestParam("type")String type, HttpSession session, CommodityOrderDetail commodityOrderDetail, Map<String, Object> model){
+    public String buy(@RequestParam("type")String type, HttpSession session, CommodityOrderDetail commodityOrderDetail, Map<String, Object> model){
         User user = (User) session.getAttribute("user");
-        if (user == null){
-            return "redirect:/user/to_login";
-        }
-
         Integer userId = user.getId();
         if ("now".equals(type)){
             Integer orderId = orderBiz.buyNow(commodityOrderDetail, userId);
@@ -35,38 +31,19 @@ public class OrderController {
             return "order_pay";
 
         } else {
-
             orderBiz.addToShoppingCart(commodityOrderDetail, userId);
             return "redirect:/commodity/detail/"+commodityOrderDetail.getCommodityId();
         }
     }
 
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
-    public String detail(@PathVariable("id")Integer orderId, HttpSession session, Map<String, Object> model){
-        User user = (User) session.getAttribute("user");
-        if (user == null){
-            return "redirect:/user/to_login";
-        }
+    public String detail(@PathVariable("id")Integer orderId, Map<String, Object> model){
         model.put("DETAIL", orderBiz.get(orderId));
         return "order_detail";
     }
 
-    @RequestMapping(value = "/to_pay", method = RequestMethod.POST)
-    public String toPay(@RequestParam("orderId")Integer orderId, HttpSession session, Map<String, Object> model){
-        User user = (User) session.getAttribute("user");
-        if (user == null){
-            return "redirect:/user/to_login";
-        }
-        model.put("DETAIL", orderBiz.get(orderId));
-        return "order_pay";
-    }
-
     @RequestMapping(value = "/to_pay/{id}", method = RequestMethod.GET)
-    public String toPayByGet(@PathVariable("id")Integer orderId, HttpSession session, Map<String, Object> model){
-        User user = (User) session.getAttribute("user");
-        if (user == null){
-            return "redirect:/user/to_login";
-        }
+    public String toPayByGet(@PathVariable("id")Integer orderId, Map<String, Object> model){
         model.put("DETAIL", orderBiz.get(orderId));
         return "order_pay";
     }
@@ -77,14 +54,30 @@ public class OrderController {
         return "redirect:/user/center";
     }
 
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
+    public String cancel(@RequestParam("type")String type, @RequestParam("id")Integer orderId){
+        orderBiz.remove(orderId);
+
+        if ("list".equals(type)){
+            return "redirect:/order/list/to_be_paid";
+        }else{
+            return "redirect:/user/center";
+        }
+    }
+
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
     public String cart(HttpSession session, Map<String, Object> model){
         User user = (User) session.getAttribute("user");
-        if (user == null){
-            return "redirect:/user/to_login";
-        }
         CommodityOrder commodityOrder = orderBiz.getCart(user.getId());
         model.put("DETAIL", commodityOrder);
         return "order_cart";
+    }
+
+    @RequestMapping(value = "/list/{type}", method = RequestMethod.GET)
+    public String list(@PathVariable("type")String type, HttpSession session, Map<String, Object> model){
+        User user = (User) session.getAttribute("user");
+        model.put("TYPE", type);
+        model.put("LIST", orderBiz.getOrderList(user.getId(), type));
+        return "order_list";
     }
 }

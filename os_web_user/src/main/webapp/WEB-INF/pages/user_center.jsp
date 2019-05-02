@@ -125,7 +125,11 @@
                             <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
                             <td>
                                 <a href="/order/to_pay/${item.id}" style="margin-right: 20px;">支付</a>
-                                <a href="#" style="margin-right: 20px;">取消</a>
+                                <a id="cancel_btn" href="#" style="margin-right: 20px;">取消</a>
+                                <form id="cancel_order" action="/order/cancel" method="post">
+                                    <input type="hidden" name="type" value="center">
+                                    <input type="hidden" name="id" value="${item.id}">
+                                </form>
                             </td>
                         </tr>
                     </c:if>
@@ -848,6 +852,9 @@
         $("#to_be_paid").removeClass("active");
     });
 
+    $("#cancel_btn").click(function () {
+        $("#cancel_order").submit();
+    });
 
 </script>
 

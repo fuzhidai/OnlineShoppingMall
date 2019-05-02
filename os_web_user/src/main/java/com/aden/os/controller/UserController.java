@@ -42,9 +42,6 @@ public class UserController {
     @RequestMapping(value = "/center", method = RequestMethod.GET)
     public String center(HttpSession session, Map<String, Object> model){
         User user = (User) session.getAttribute("user");
-        if (user == null){
-            return "redirect:to_login";
-        }
         Integer userId = user.getId();
         model.put("LIST", orderBiz.getByUserId(userId));
         return "user_center";
@@ -60,10 +57,6 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@RequestParam("phone") String phone, @RequestParam("password") String password, HttpSession session){
         User user = userBiz.verifyInfo(phone, password);
-
-        if(user == null){
-            return "redirect:to_login";
-        }
         session.setAttribute("user", user);
         return "redirect:/commodity/homepage";
     }

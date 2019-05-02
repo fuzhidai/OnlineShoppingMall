@@ -71,11 +71,12 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我的订单 <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">代发货</a></li>
+                                        <li><a href="/order/list/to_be_paid">待支付</a></li>
+                                        <li><a href="/order/list/paid">待发货</a></li>
                                         <li><a href="#">待收货</a></li>
                                         <li><a href="#">待评价</a></li>
                                         <li role="separator" class="divider"></li>
-                                        <li><a href="#">全部订单</a></li>
+                                        <li><a href="/order/list/all">全部订单</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="/order/cart">购物车</a></li>

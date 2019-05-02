@@ -1,12 +1,20 @@
 package com.aden.os.controller;
 
 import com.aden.os.biz.CommodityBiz;
+import com.aden.os.biz.OrderBiz;
+import com.aden.os.biz.UserBiz;
+import com.aden.os.dto.CommoditySalesRecord;
+import com.aden.os.entity.CommodityOrder;
+import com.aden.os.entity.CommodityOrderDetail;
+import com.aden.os.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -15,6 +23,10 @@ public class CommodityController {
 
     @Autowired
     private CommodityBiz commodityBiz;
+    @Autowired
+    private OrderBiz orderBiz;
+    @Autowired
+    private UserBiz userBiz;
 
     @RequestMapping(value = "/homepage", method = RequestMethod.GET)
     public String listAll(Map<String, Object> model){
@@ -31,6 +43,23 @@ public class CommodityController {
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public String detail(@PathVariable("id")Integer id, Map<String, Object> model){
         model.put("DETAIL", commodityBiz.get(id));
+
+        List<CommodityOrderDetail> commodityOrderDetailList = orderBiz.getCommoditySalesRecord(id);
+        List<CommoditySalesRecord> commoditySalesRecordList = new ArrayList<>();
+        for (CommodityOrderDetail commodityOrderDetail: commodityOrderDetailList){
+            CommodityOrder commodityOrder = orderBiz.get(commodityOrderDetail.getOrderId());
+            User user = userBiz.get(commodityOrder.getUserId());
+
+            CommoditySalesRecord commoditySalesRecord = new CommoditySalesRecord();
+            commoditySalesRecord.setNickname(user.getNickname().substring(0, 2) + "*****");
+            commoditySalesRecord.setQuantity(commodityOrder.getCommodityQuantity());
+            commoditySalesRecord.setStatus(commodityOrder.getStatus());
+            commoditySalesRecord.setTime(commodityOrder.getCreateTime());
+            commoditySalesRecord.setEvaluation(5);
+            commoditySalesRecordList.add(commoditySalesRecord);
+        }
+
+        model.put("SALES_RECORD", commoditySalesRecordList);
         return "commodity_detail";
     }
 }

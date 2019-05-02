@@ -14,9 +14,13 @@ public interface CommodityOrderDetailDao {
 
     void delete(Integer id);
 
+    void deleteByOrderId(Integer OrderId);
+
     CommodityOrderDetail select(Integer id);
 
     List<CommodityOrderDetail> selectByOrderId(Integer id);
+
+    List<CommodityOrderDetail> selectByCommodityId(Integer CommodityId);
 
     List<CommodityOrderDetail> selectAll();
 }

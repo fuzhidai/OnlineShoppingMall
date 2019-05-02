@@ -92,8 +92,17 @@
                     <h2>${item.name}</h2>
                     <p style="height: 80px;">${item.introduction}</p>
                     <p>
-                        <a class="btn btn-default" href="#" role="button" style="margin-right: 30px;">立即购买</a>
-                        <a class="btn btn-default" href="/commodity/detail/${item.id}" role="button">详情 &raquo;</a>
+                        <form action="/order/buy" method="post">
+
+                            <input type="hidden" name="commodityId" value="${item.id}">
+                            <input type="hidden" name="commodityName" value="${item.name}">
+                            <input type="hidden" name="commodityPrice" value="${item.price}">
+                            <input type="hidden" name="commodityQuantity" value="1">
+                            <input type="hidden" id="type" name="type" value="now">
+
+                            <button id="buy_now_btn" class="btn btn-default" type="submit" style="margin-right: 30px;">立即购买</button>
+                            <a class="btn btn-default" href="/commodity/detail/${item.id}" role="button">详情 &raquo;</a>
+                </form>
                     </p>
                 </div>
 

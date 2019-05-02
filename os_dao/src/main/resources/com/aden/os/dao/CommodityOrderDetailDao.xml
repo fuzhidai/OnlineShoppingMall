@@ -26,12 +26,21 @@
         delete from commodity_order_detail where id=#{id};
     </delete>
 
+    <delete id="deleteByOrderId" parameterType="Integer">
+        delete from commodity_order_detail where order_id=#{orderId};
+    </delete>
+
     <select id="select" parameterType="Integer" resultMap="commodityOrderDetail">
         select * from commodity_order_detail where id=#{id};
     </select>
 
     <select id="selectByOrderId" parameterType="Integer" resultMap="commodityOrderDetail">
         select * from commodity_order_detail where order_id=#{orderId};
+    </select>
+
+    <select id="selectByCommodityId" parameterType="Integer" resultMap="commodityOrderDetail">
+        select * from commodity_order_detail cod where commodity_id=#{CommodityId} and
+        'pending_settlement' != (select status from commodity_order co where co.id = cod.order_id);
     </select>
 
     <select id="selectAll" resultMap="commodityOrderDetail">

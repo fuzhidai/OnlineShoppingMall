@@ -45,8 +45,7 @@
         <div class="col-lg-6"></div>
         <div class="col-lg-2"><h4>已选商品 ${DETAIL.commodityQuantity} 件</h4></div>
         <div class="col-lg-2"><h4>合计：￥${DETAIL.totalAmount}</h4></div>
-        <form action="/order/to_pay" method="post">
-            <input type="hidden" name="orderId" value="${DETAIL.id}">
+        <form action="/order/to_pay/${DETAIL.id}" method="get">
             <button class="btn btn-primary col-lg-2" type="submit">提交订单</button>
         </form>
     </div>
