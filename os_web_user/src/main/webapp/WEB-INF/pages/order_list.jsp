@@ -11,6 +11,9 @@
                 <c:when test="${TYPE == 'all'}">全部</c:when>
                 <c:when test="${TYPE == 'to_be_paid'}">待支付</c:when>
                 <c:when test="${TYPE == 'to_be_delivered'}">待发货</c:when>
+                <c:when test="${TYPE == 'pending_receipt'}">待收货</c:when>
+                <c:when test="${TYPE == 'to_be_commented'}">待评价</c:when>
+                <c:when test="${TYPE == 'completed'}">已完成</c:when>
             </c:choose>
             订单
         </h1>
@@ -27,7 +30,15 @@
                     <th>订单金额</th>
                     <th>运单号码</th>
                     <th>创建时间</th>
-                    <th>最后更新</th>
+                    <th>
+                        <c:choose>
+                            <c:when test="${item.status == 'to_be_paid'}">结算时间</c:when>
+                            <c:when test="${item.status == 'to_be_delivered'}">支付时间</c:when>
+                            <c:when test="${item.status == 'pending_receipt'}">发货时间</c:when>
+                            <c:when test="${item.status == 'to_be_commented'}">确认收货</c:when>
+                            <c:when test="${item.status == 'completed'}">完成时间</c:when>
+                        </c:choose>
+                    </th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -39,6 +50,9 @@
                             <c:choose>
                                 <c:when test="${item.status == 'to_be_paid'}">待支付</c:when>
                                 <c:when test="${item.status == 'to_be_delivered'}">待发货</c:when>
+                                <c:when test="${item.status == 'pending_receipt'}">待收货</c:when>
+                                <c:when test="${item.status == 'to_be_commented'}">待评价</c:when>
+                                <c:when test="${item.status == 'completed'}">已完成</c:when>
                             </c:choose>
                         </td>
                         <td>￥ ${item.totalAmount}</td>
@@ -63,6 +77,17 @@
                                 <c:when test="${item.status == 'to_be_delivered'}">
                                     <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
                                     <a href="#" style="margin-right: 20px;">催单</a>
+                                </c:when>
+                                <c:when test="${item.status == 'pending_receipt'}">
+                                    <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
+                                    <a href="/order/to_confirm_receipt/${item.id}" style="margin-right: 20px;">收货</a>
+                                </c:when>
+                                <c:when test="${item.status == 'to_be_commented'}">
+                                    <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
+                                    <a href="/order/to_confirm_receipt/${item.id}" style="margin-right: 20px;">评价</a>
+                                </c:when>
+                                <c:when test="${item.status == 'completed'}">
+                                    <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
                                 </c:when>
                             </c:choose>
 

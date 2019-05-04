@@ -110,6 +110,40 @@ public class OrderBizImpl implements OrderBiz {
         edit(commodityOrder);
     }
 
+    public void confirmReceipt(Integer orderId) {
+
+        // 根据当前用户的编号从数据库中查找该用户的待结算订单
+        CommodityOrder commodityOrder = get(orderId);
+        if (commodityOrder == null){
+            return;
+        }
+
+        // 修改订单状态为待评价
+        commodityOrder.setStatus("to_be_commented");
+        // 更新最后订单最后操作时间
+        commodityOrder.setUpdateTime(new Date());
+
+        // 将当前订单保存至数据库中
+        edit(commodityOrder);
+    }
+
+    public void completed(Integer orderId) {
+
+        // 根据当前用户的编号从数据库中查找该用户的待结算订单
+        CommodityOrder commodityOrder = get(orderId);
+        if (commodityOrder == null){
+            return;
+        }
+
+        // 修改订单状态为已完成
+        commodityOrder.setStatus("completed");
+        // 更新最后订单最后操作时间
+        commodityOrder.setUpdateTime(new Date());
+
+        // 将当前订单保存至数据库中
+        edit(commodityOrder);
+    }
+
     public void remove(Integer id) {
         commodityOrderDetailDao.deleteByOrderId(id);
         commodityOrderDao.delete(id);
@@ -121,6 +155,10 @@ public class OrderBizImpl implements OrderBiz {
 
     public CommodityOrder getCart(Integer userId) {
         return getOrderCart(userId);
+    }
+
+    public String getCommodityNameByOrderDetail(Integer id) {
+        return commodityOrderDetailDao.getCommodityByOrderDetail(id).getName();
     }
 
     public List<CommodityOrder> getOrderListByStatus(String status) {

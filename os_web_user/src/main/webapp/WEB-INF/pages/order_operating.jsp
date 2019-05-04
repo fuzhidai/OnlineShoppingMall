@@ -6,7 +6,12 @@
 <div class="container marketing">
 
     <div class="page-header" style="margin-top: 10%;">
-        <h1>订单支付</h1>
+        <h1>
+            <c:choose>
+                <c:when test="${DETAIL.status == 'to_be_paid'}">订单支付</c:when>
+                <c:when test="${DETAIL.status == 'pending_receipt'}">确认收货</c:when>
+            </c:choose>
+        </h1>
     </div>
 
     <div id="to_be_delivered_list">
@@ -30,7 +35,10 @@
                         <td>${item.commodityQuantity} 件</td>
                         <td>￥ <fmt:formatNumber value="${item.commodityPrice * item.commodityQuantity}" pattern="#0.00"/></td>
                         <td>
-                            <a href="/commodity/detail/${item.commodityId}">查看详情</a>
+                            <a href="/commodity/detail/${item.commodityId}" style="margin-right: 20px;">查看详情</a>
+                            <c:if test="${DETAIL.status == 'to_be_commented'}">
+                                <a href="/order/to_comment_commodity/${item.id}">评价</a>
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>
@@ -43,12 +51,27 @@
         <div class="col-lg-6"></div>
         <div class="col-lg-2"><h4>已选商品 ${DETAIL.commodityQuantity} 件</h4></div>
         <div class="col-lg-2"><h4>合计：￥${DETAIL.totalAmount}</h4></div>
-        <form action="/order/pay" method="post">
-            <input type="hidden" name="orderId" value="${DETAIL.id}">
-            <button class="btn btn-primary col-lg-2" type="submit">确认支付</button>
-        </form>
+        <c:choose>
+            <c:when test="${DETAIL.status == 'to_be_paid'}">
+                <form action="/order/pay" method="post">
+                    <input type="hidden" name="orderId" value="${DETAIL.id}">
+                    <button class="btn btn-primary col-lg-2" type="submit">确认支付</button>
+                </form>
+            </c:when>
+            <c:when test="${DETAIL.status == 'pending_receipt'}">
+                <form action="/order/confirm_receipt" method="post">
+                    <input type="hidden" name="orderId" value="${DETAIL.id}">
+                    <button class="btn btn-primary col-lg-2" type="submit">确认收货</button>
+                </form>
+            </c:when>
+            <c:when test="${DETAIL.status == 'to_be_commented'}">
+                <form action="/order/comment_order" method="post">
+                    <input type="hidden" name="orderId" value="${DETAIL.id}">
+                    <button class="btn btn-primary col-lg-2" type="submit">完成评价</button>
+                </form>
+            </c:when>
+        </c:choose>
     </div>
-
 
     <hr class="featurette-divider">
 

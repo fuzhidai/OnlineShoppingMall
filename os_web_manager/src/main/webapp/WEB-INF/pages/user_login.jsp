@@ -1,7 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -32,15 +30,7 @@
     <![endif]-->
 
     <!-- Custom styles for this template -->
-    <link href="/css/mall_homepage.css" rel="stylesheet">
-
-    <style>
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none !important;
-            margin: 0;
-        }
-    </style>
+    <link href="/css/login.css" rel="stylesheet">
 </head>
 
 <!-- NAVBAR
@@ -99,7 +89,7 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 
-<script src="/js/jquery.md5.js"></script>
+<script src="/js/jquery.md5.manager.js"></script>
 
 <script>
 

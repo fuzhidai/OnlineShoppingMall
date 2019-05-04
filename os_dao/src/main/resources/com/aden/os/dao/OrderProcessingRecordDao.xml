@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aden.os.dao.OrderProcessingRecordDao">
+    <resultMap id="orderProcessingRecord" type="OrderProcessingRecord">
+        <result column="order_id" property="orderId" javaType="Integer"/>
+        <result column="operator_id" property="operatorId" javaType="Integer"/>
+        <result column="status" property="status" javaType="String"/>
+        <result column="time" property="time" javaType="java.util.Date"/>
+        <association property="operator" column="operator_id" javaType="String">
+            <result column="name" property="operator" javaType="String"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" parameterType="OrderProcessingRecord">
+        insert into order_processing_record values (#{orderId}, #{operatorId}, #{status}, #{time});
+    </insert>
+
+    <select id="selectByOrderId" parameterType="Integer" resultMap="orderProcessingRecord">
+        select opr.*, u.name from order_processing_record opr left join user u on u.id = opr.operator_id
+        where opr.order_id=#{orderId} order by time;
+    </select>
+</mapper>

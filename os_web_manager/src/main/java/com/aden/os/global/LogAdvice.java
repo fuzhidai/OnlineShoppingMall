@@ -22,7 +22,7 @@ public class LogAdvice {
     @Autowired
     private LogBiz logBiz;
 
-    @After("execution(* com.aden.os.controller.*.*(..)) && !execution(* com.aden.os.controller.*.*login(..))")
+    @After("execution(* com.aden.os.controller.*.*(..)) && !execution(* com.aden.os.controller.*.*Login(..)) && !execution(* com.aden.os.controller.*.login(..))")
     public void operatingLog(JoinPoint joinPoint){
 
         Log log = initLogInstance(joinPoint);
@@ -30,7 +30,12 @@ public class LogAdvice {
         logBiz.addOperatingLog(log);
     }
 
-    public void loginLog(){}
+    @After("execution(* com.aden.os.controller.*.login(..))")
+    public void loginLog(JoinPoint joinPoint){
+        Log log = initLogInstance(joinPoint);
+        log.setResult("success");
+        logBiz.addLoginLog(log);
+    }
 
     public void logoutLog(){}
 
@@ -47,9 +52,8 @@ public class LogAdvice {
         Log log = new Log();
         log.setModule(joinPoint.getTarget().getClass().getSimpleName());
         log.setOperating(joinPoint.getSignature().getName());
-
-        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        HttpSession session = httpServletRequest.getSession();
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession();
         User user = (User) session.getAttribute("user");
         log.setoperatorId(user.getId());
 

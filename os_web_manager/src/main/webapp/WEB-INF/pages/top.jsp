@@ -64,6 +64,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
+            <div class="page-header" style="margin-top: 10px;"><h4>${sessionScope.user.name}</h4></div>
             <ul class="nav nav-sidebar">
                 <c:choose>
                     <c:when test="${TYPE=='member'}"><li class="active"><a href="/backstage/user/member/list">会员管理</a></li></c:when>
@@ -118,5 +119,19 @@
                     <c:when test="${TYPE!='completed'}"><li><a href="/backstage/order/list/completed">已完成订单</a></li></c:when>
                 </c:choose>
                 <li><a href="">订单数据分析</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <c:choose>
+                    <c:when test="${TYPE=='operating'}"><li class="active"><a href="/backstage/log/operating/list">操作日志</a></li></c:when>
+                    <c:when test="${TYPE!='operating'}"><li><a href="/backstage/log/operating/list">操作日志</a></li></c:when>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${TYPE=='login'}"><li class="active"><a href="/backstage/log/login/list">登陆日志</a></li></c:when>
+                    <c:when test="${TYPE!='login'}"><li><a href="/backstage/log/login/list">登陆日志</a></li></c:when>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${TYPE=='system'}"><li class="active"><a href="/backstage/log/system/list">系统日志</a></li></c:when>
+                    <c:when test="${TYPE!='system'}"><li><a href="/backstage/log/system/list">系统日志</a></li></c:when>
+                </c:choose>
             </ul>
         </div>

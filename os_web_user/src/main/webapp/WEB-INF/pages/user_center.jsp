@@ -1,3 +1,6 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.aden.os.entity.CommodityOrder" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -66,7 +69,7 @@
                 <h3><span>3件</span></h3>
             </div>
             <div class="col-lg-2">
-                <h5>退款/售后</h5>
+                <h5>已完成</h5>
                 <h3><span>5件</span></h3>
             </div>
             <div class="col-lg-2">
@@ -83,7 +86,7 @@
         <li role="presentation" id="to_be_delivered"><a>代发货</a></li>
         <li role="presentation" id="pending_receipt"><a>待收货</a></li>
         <li role="presentation" id="comment"><a>待评价</a></li>
-        <li role="presentation" id="refund_and_after_sale"><a>退款/售后</a></li>
+        <li role="presentation" id="completed"><a>已完成</a></li>
         <li role="presentation" id="all_orders"><a>全部订单</a></li>
     </ul>
 
@@ -99,7 +102,7 @@
                     <th>订单金额</th>
                     <th>运单号码</th>
                     <th>创建时间</th>
-                    <th>最后更新</th>
+                    <th>结算时间</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -150,7 +153,7 @@
                     <th>订单金额</th>
                     <th>运单号码</th>
                     <th>创建时间</th>
-                    <th>最后更新</th>
+                    <th>支付时间</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -193,125 +196,42 @@
                 <thead>
                 <tr>
                     <th>订单编号</th>
-                    <th>会员昵称</th>
-                    <th>购买数量</th>
-                    <th>购买时间</th>
-                    <th>交易状态</th>
+                    <th>订单状态</th>
+                    <th>订单金额</th>
+                    <th>运单号码</th>
+                    <th>创建时间</th>
+                    <th>发货时间</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1,001</td>
-                    <td>Lorem</td>
-                    <td>ipsum</td>
-                    <td>dolor</td>
-                    <td>sit</td>
-                </tr>
-                <tr>
-                    <td>1,002</td>
-                    <td>amet</td>
-                    <td>consectetur</td>
-                    <td>adipiscing</td>
-                    <td>elit</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>Integer</td>
-                    <td>nec</td>
-                    <td>odio</td>
-                    <td>Praesent</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>libero</td>
-                    <td>Sed</td>
-                    <td>cursus</td>
-                    <td>ante</td>
-                </tr>
-                <tr>
-                    <td>1,004</td>
-                    <td>dapibus</td>
-                    <td>diam</td>
-                    <td>Sed</td>
-                    <td>nisi</td>
-                </tr>
-                <tr>
-                    <td>1,005</td>
-                    <td>Nulla</td>
-                    <td>quis</td>
-                    <td>sem</td>
-                    <td>at</td>
-                </tr>
-                <tr>
-                    <td>1,006</td>
-                    <td>nibh</td>
-                    <td>elementum</td>
-                    <td>imperdiet</td>
-                    <td>Duis</td>
-                </tr>
-                <tr>
-                    <td>1,007</td>
-                    <td>sagittis</td>
-                    <td>ipsum</td>
-                    <td>Praesent</td>
-                    <td>mauris</td>
-                </tr>
-                <tr>
-                    <td>1,008</td>
-                    <td>Fusce</td>
-                    <td>nec</td>
-                    <td>tellus</td>
-                    <td>sed</td>
-                </tr>
-                <tr>
-                    <td>1,009</td>
-                    <td>augue</td>
-                    <td>semper</td>
-                    <td>porta</td>
-                    <td>Mauris</td>
-                </tr>
-                <tr>
-                    <td>1,010</td>
-                    <td>massa</td>
-                    <td>Vestibulum</td>
-                    <td>lacinia</td>
-                    <td>arcu</td>
-                </tr>
-                <tr>
-                    <td>1,011</td>
-                    <td>eget</td>
-                    <td>nulla</td>
-                    <td>Class</td>
-                    <td>aptent</td>
-                </tr>
-                <tr>
-                    <td>1,012</td>
-                    <td>taciti</td>
-                    <td>sociosqu</td>
-                    <td>ad</td>
-                    <td>litora</td>
-                </tr>
-                <tr>
-                    <td>1,013</td>
-                    <td>torquent</td>
-                    <td>per</td>
-                    <td>conubia</td>
-                    <td>nostra</td>
-                </tr>
-                <tr>
-                    <td>1,014</td>
-                    <td>per</td>
-                    <td>inceptos</td>
-                    <td>himenaeos</td>
-                    <td>Curabitur</td>
-                </tr>
-                <tr>
-                    <td>1,015</td>
-                    <td>sodales</td>
-                    <td>ligula</td>
-                    <td>in</td>
-                    <td>libero</td>
-                </tr>
+
+                <c:forEach items="${LIST}" var="item">
+                    <c:if test="${item.status == 'pending_receipt'}">
+                        <tr>
+                            <td>${item.id}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${item.status == 'pending_receipt'}">待收货</c:when>
+                                </c:choose>
+                            </td>
+                            <td>￥ ${item.totalAmount}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${item.waybillNumber == null}">暂未发货</c:when>
+                                    <c:when test="${item.waybillNumber != null}">${item.waybillNumber}</c:when>
+                                </c:choose>
+                            </td>
+                            <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                            <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                            <td>
+                                <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
+                                <a href="/order/to_confirm_receipt/${item.id}" style="margin-right: 20px;">收货</a>
+                            </td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+
                 </tbody>
             </table>
         </div>
@@ -324,389 +244,129 @@
                 <thead>
                 <tr>
                     <th>订单编号</th>
-                    <th>会员昵称</th>
-                    <th>购买数量</th>
-                    <th>购买时间</th>
-                    <th>交易状态</th>
+                    <th>订单状态</th>
+                    <th>订单金额</th>
+                    <th>运单号码</th>
+                    <th>创建时间</th>
+                    <th>确认收货</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1,001</td>
-                    <td>Lorem</td>
-                    <td>ipsum</td>
-                    <td>dolor</td>
-                    <td>sit</td>
-                </tr>
-                <tr>
-                    <td>1,002</td>
-                    <td>amet</td>
-                    <td>consectetur</td>
-                    <td>adipiscing</td>
-                    <td>elit</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>Integer</td>
-                    <td>nec</td>
-                    <td>odio</td>
-                    <td>Praesent</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>libero</td>
-                    <td>Sed</td>
-                    <td>cursus</td>
-                    <td>ante</td>
-                </tr>
-                <tr>
-                    <td>1,004</td>
-                    <td>dapibus</td>
-                    <td>diam</td>
-                    <td>Sed</td>
-                    <td>nisi</td>
-                </tr>
-                <tr>
-                    <td>1,005</td>
-                    <td>Nulla</td>
-                    <td>quis</td>
-                    <td>sem</td>
-                    <td>at</td>
-                </tr>
-                <tr>
-                    <td>1,006</td>
-                    <td>nibh</td>
-                    <td>elementum</td>
-                    <td>imperdiet</td>
-                    <td>Duis</td>
-                </tr>
-                <tr>
-                    <td>1,007</td>
-                    <td>sagittis</td>
-                    <td>ipsum</td>
-                    <td>Praesent</td>
-                    <td>mauris</td>
-                </tr>
-                <tr>
-                    <td>1,008</td>
-                    <td>Fusce</td>
-                    <td>nec</td>
-                    <td>tellus</td>
-                    <td>sed</td>
-                </tr>
-                <tr>
-                    <td>1,009</td>
-                    <td>augue</td>
-                    <td>semper</td>
-                    <td>porta</td>
-                    <td>Mauris</td>
-                </tr>
-                <tr>
-                    <td>1,010</td>
-                    <td>massa</td>
-                    <td>Vestibulum</td>
-                    <td>lacinia</td>
-                    <td>arcu</td>
-                </tr>
-                <tr>
-                    <td>1,011</td>
-                    <td>eget</td>
-                    <td>nulla</td>
-                    <td>Class</td>
-                    <td>aptent</td>
-                </tr>
-                <tr>
-                    <td>1,012</td>
-                    <td>taciti</td>
-                    <td>sociosqu</td>
-                    <td>ad</td>
-                    <td>litora</td>
-                </tr>
-                <tr>
-                    <td>1,013</td>
-                    <td>torquent</td>
-                    <td>per</td>
-                    <td>conubia</td>
-                    <td>nostra</td>
-                </tr>
-                <tr>
-                    <td>1,014</td>
-                    <td>per</td>
-                    <td>inceptos</td>
-                    <td>himenaeos</td>
-                    <td>Curabitur</td>
-                </tr>
-                <tr>
-                    <td>1,015</td>
-                    <td>sodales</td>
-                    <td>ligula</td>
-                    <td>in</td>
-                    <td>libero</td>
-                </tr>
+
+                <c:forEach items="${LIST}" var="item">
+                    <c:if test="${item.status == 'to_be_commented'}">
+                        <tr>
+                            <td>${item.id}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${item.status == 'to_be_commented'}">待评价</c:when>
+                                </c:choose>
+                            </td>
+                            <td>￥ ${item.totalAmount}</td>
+                            <td>${item.waybillNumber}</td>
+                            <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                            <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                            <td>
+                                <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
+                                <a href="/order/to_comment_order/${item.id}" style="margin-right: 20px;">评价</a>
+                            </td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+
                 </tbody>
             </table>
         </div>
 
     </div>
 
-    <div id="refund_and_after_sale_list" style="display: none">
+    <div id="completed_list" style="display: none">
+
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                 <tr>
                     <th>订单编号</th>
-                    <th>会员昵称</th>
-                    <th>购买数量</th>
-                    <th>购买时间</th>
-                    <th>交易状态</th>
+                    <th>订单状态</th>
+                    <th>订单金额</th>
+                    <th>运单号码</th>
+                    <th>创建时间</th>
+                    <th>确认收货</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1,001</td>
-                    <td>Lorem</td>
-                    <td>ipsum</td>
-                    <td>dolor</td>
-                    <td>sit</td>
-                </tr>
-                <tr>
-                    <td>1,002</td>
-                    <td>amet</td>
-                    <td>consectetur</td>
-                    <td>adipiscing</td>
-                    <td>elit</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>Integer</td>
-                    <td>nec</td>
-                    <td>odio</td>
-                    <td>Praesent</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>libero</td>
-                    <td>Sed</td>
-                    <td>cursus</td>
-                    <td>ante</td>
-                </tr>
-                <tr>
-                    <td>1,004</td>
-                    <td>dapibus</td>
-                    <td>diam</td>
-                    <td>Sed</td>
-                    <td>nisi</td>
-                </tr>
-                <tr>
-                    <td>1,005</td>
-                    <td>Nulla</td>
-                    <td>quis</td>
-                    <td>sem</td>
-                    <td>at</td>
-                </tr>
-                <tr>
-                    <td>1,006</td>
-                    <td>nibh</td>
-                    <td>elementum</td>
-                    <td>imperdiet</td>
-                    <td>Duis</td>
-                </tr>
-                <tr>
-                    <td>1,007</td>
-                    <td>sagittis</td>
-                    <td>ipsum</td>
-                    <td>Praesent</td>
-                    <td>mauris</td>
-                </tr>
-                <tr>
-                    <td>1,008</td>
-                    <td>Fusce</td>
-                    <td>nec</td>
-                    <td>tellus</td>
-                    <td>sed</td>
-                </tr>
-                <tr>
-                    <td>1,009</td>
-                    <td>augue</td>
-                    <td>semper</td>
-                    <td>porta</td>
-                    <td>Mauris</td>
-                </tr>
-                <tr>
-                    <td>1,010</td>
-                    <td>massa</td>
-                    <td>Vestibulum</td>
-                    <td>lacinia</td>
-                    <td>arcu</td>
-                </tr>
-                <tr>
-                    <td>1,011</td>
-                    <td>eget</td>
-                    <td>nulla</td>
-                    <td>Class</td>
-                    <td>aptent</td>
-                </tr>
-                <tr>
-                    <td>1,012</td>
-                    <td>taciti</td>
-                    <td>sociosqu</td>
-                    <td>ad</td>
-                    <td>litora</td>
-                </tr>
-                <tr>
-                    <td>1,013</td>
-                    <td>torquent</td>
-                    <td>per</td>
-                    <td>conubia</td>
-                    <td>nostra</td>
-                </tr>
-                <tr>
-                    <td>1,014</td>
-                    <td>per</td>
-                    <td>inceptos</td>
-                    <td>himenaeos</td>
-                    <td>Curabitur</td>
-                </tr>
-                <tr>
-                    <td>1,015</td>
-                    <td>sodales</td>
-                    <td>ligula</td>
-                    <td>in</td>
-                    <td>libero</td>
-                </tr>
+
+                <c:forEach items="${LIST}" var="item">
+                    <c:if test="${item.status == 'completed'}">
+                        <tr>
+                            <td>${item.id}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${item.status == 'completed'}">已完成</c:when>
+                                </c:choose>
+                            </td>
+                            <td>￥ ${item.totalAmount}</td>
+                            <td>${item.waybillNumber}</td>
+                            <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                            <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                            <td>
+                                <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
+                            </td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+
                 </tbody>
             </table>
         </div>
+
     </div>
 
     <div id="all_orders_list" style="display: none">
+
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                 <tr>
                     <th>订单编号</th>
-                    <th>会员昵称</th>
-                    <th>购买数量</th>
-                    <th>购买时间</th>
-                    <th>交易状态</th>
+                    <th>订单状态</th>
+                    <th>订单金额</th>
+                    <th>运单号码</th>
+                    <th>创建时间</th>
+                    <th>确认收货</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1,001</td>
-                    <td>Lorem</td>
-                    <td>ipsum</td>
-                    <td>dolor</td>
-                    <td>sit</td>
-                </tr>
-                <tr>
-                    <td>1,002</td>
-                    <td>amet</td>
-                    <td>consectetur</td>
-                    <td>adipiscing</td>
-                    <td>elit</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>Integer</td>
-                    <td>nec</td>
-                    <td>odio</td>
-                    <td>Praesent</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>libero</td>
-                    <td>Sed</td>
-                    <td>cursus</td>
-                    <td>ante</td>
-                </tr>
-                <tr>
-                    <td>1,004</td>
-                    <td>dapibus</td>
-                    <td>diam</td>
-                    <td>Sed</td>
-                    <td>nisi</td>
-                </tr>
-                <tr>
-                    <td>1,005</td>
-                    <td>Nulla</td>
-                    <td>quis</td>
-                    <td>sem</td>
-                    <td>at</td>
-                </tr>
-                <tr>
-                    <td>1,006</td>
-                    <td>nibh</td>
-                    <td>elementum</td>
-                    <td>imperdiet</td>
-                    <td>Duis</td>
-                </tr>
-                <tr>
-                    <td>1,007</td>
-                    <td>sagittis</td>
-                    <td>ipsum</td>
-                    <td>Praesent</td>
-                    <td>mauris</td>
-                </tr>
-                <tr>
-                    <td>1,008</td>
-                    <td>Fusce</td>
-                    <td>nec</td>
-                    <td>tellus</td>
-                    <td>sed</td>
-                </tr>
-                <tr>
-                    <td>1,009</td>
-                    <td>augue</td>
-                    <td>semper</td>
-                    <td>porta</td>
-                    <td>Mauris</td>
-                </tr>
-                <tr>
-                    <td>1,010</td>
-                    <td>massa</td>
-                    <td>Vestibulum</td>
-                    <td>lacinia</td>
-                    <td>arcu</td>
-                </tr>
-                <tr>
-                    <td>1,011</td>
-                    <td>eget</td>
-                    <td>nulla</td>
-                    <td>Class</td>
-                    <td>aptent</td>
-                </tr>
-                <tr>
-                    <td>1,012</td>
-                    <td>taciti</td>
-                    <td>sociosqu</td>
-                    <td>ad</td>
-                    <td>litora</td>
-                </tr>
-                <tr>
-                    <td>1,013</td>
-                    <td>torquent</td>
-                    <td>per</td>
-                    <td>conubia</td>
-                    <td>nostra</td>
-                </tr>
-                <tr>
-                    <td>1,014</td>
-                    <td>per</td>
-                    <td>inceptos</td>
-                    <td>himenaeos</td>
-                    <td>Curabitur</td>
-                </tr>
-                <tr>
-                    <td>1,015</td>
-                    <td>sodales</td>
-                    <td>ligula</td>
-                    <td>in</td>
-                    <td>libero</td>
-                </tr>
+
+                <c:forEach items="${LIST}" var="item">
+                    <tr>
+                        <td>${item.id}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.status == 'to_be_paid'}">待支付</c:when>
+                                <c:when test="${item.status == 'to_be_delivered'}">待发货</c:when>
+                                <c:when test="${item.status == 'pending_receipt'}">待收货</c:when>
+                                <c:when test="${item.status == 'to_be_commented'}">待评价</c:when>
+                                <c:when test="${item.status == 'completed'}">已完成</c:when>
+                            </c:choose>
+                        </td>
+                        <td>￥ ${item.totalAmount}</td>
+                        <td>${item.waybillNumber}</td>
+                        <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td>
+                            <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
+                        </td>
+                    </tr>
+                </c:forEach>
+
                 </tbody>
             </table>
         </div>
+
     </div>
 
     <hr class="featurette-divider">
@@ -742,8 +402,8 @@
         $("#comment_list").hide();
         $("#comment").removeClass("active");
 
-        $("#refund_and_after_sale_list").hide();
-        $("#refund_and_after_sale").removeClass("active");
+        $("#completed_list").hide();
+        $("#completed").removeClass("active");
 
         $("#all_orders_list").hide();
         $("#all_orders").removeClass("active");
@@ -762,8 +422,8 @@
         $("#comment_list").hide();
         $("#comment").removeClass("active");
 
-        $("#refund_and_after_sale_list").hide();
-        $("#refund_and_after_sale").removeClass("active");
+        $("#completed_list").hide();
+        $("#completed").removeClass("active");
 
         $("#all_orders_list").hide();
         $("#all_orders").removeClass("active");
@@ -782,8 +442,8 @@
         $("#comment_list").hide();
         $("#comment").removeClass("active");
 
-        $("#refund_and_after_sale_list").hide();
-        $("#refund_and_after_sale").removeClass("active");
+        $("#completed_list").hide();
+        $("#completed").removeClass("active");
 
         $("#all_orders_list").hide();
         $("#all_orders").removeClass("active");
@@ -802,8 +462,8 @@
         $("#comment_list").show();
         $("#comment").addClass("active");
 
-        $("#refund_and_after_sale_list").hide();
-        $("#refund_and_after_sale").removeClass("active");
+        $("#completed_list").hide();
+        $("#completed").removeClass("active");
 
         $("#all_orders_list").hide();
         $("#all_orders").removeClass("active");
@@ -812,7 +472,7 @@
         $("#to_be_paid").removeClass("active");
     });
 
-    $("#refund_and_after_sale").click(function(){
+    $("#completed").click(function(){
         $("#to_be_delivered_list").hide();
         $("#to_be_delivered").removeClass("active");
 
@@ -822,8 +482,8 @@
         $("#comment_list").hide();
         $("#comment").removeClass("active");
 
-        $("#refund_and_after_sale_list").show();
-        $("#refund_and_after_sale").addClass("active");
+        $("#completed_list").show();
+        $("#completed").addClass("active");
 
         $("#all_orders_list").hide();
         $("#all_orders").removeClass("active");
@@ -842,8 +502,8 @@
         $("#comment_list").hide();
         $("#comment").removeClass("active");
 
-        $("#refund_and_after_sale_list").hide();
-        $("#refund_and_after_sale").removeClass("active");
+        $("#completed_list").hide();
+        $("#completed").removeClass("active");
 
         $("#all_orders_list").show();
         $("#all_orders").addClass("active");

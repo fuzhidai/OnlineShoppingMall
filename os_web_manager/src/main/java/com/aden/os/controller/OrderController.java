@@ -1,6 +1,7 @@
 package com.aden.os.controller;
 
 import com.aden.os.biz.OrderBiz;
+import com.aden.os.biz.OrderProcessingRecordBiz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,8 @@ public class OrderController {
 
     @Autowired
     private OrderBiz orderBiz;
+    @Autowired
+    private OrderProcessingRecordBiz orderProcessingRecordBiz;
 
     @RequestMapping(value = "/list/{type}", method = RequestMethod.GET)
     public String list(@PathVariable("type")String status, Map<String, Object> model){
@@ -30,7 +33,7 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/{type}/to_deliver/{id}", method = RequestMethod.GET)
-    public String list(@PathVariable("type")String type, @PathVariable("id")Integer orderId, Map<String, Object> model){
+    public String toDeliver(@PathVariable("type")String type, @PathVariable("id")Integer orderId, Map<String, Object> model){
         model.put("TYPE", type);
         model.put("DETAIL", orderBiz.get(orderId));
         return "order_deliver";
@@ -40,11 +43,12 @@ public class OrderController {
     public String detail(@PathVariable("type")String type, @PathVariable("id")Integer orderId, Map<String, Object> model){
         model.put("TYPE", type);
         model.put("DETAIL", orderBiz.get(orderId));
+        model.put("RECORD", orderProcessingRecordBiz.getOrderProcessingRecord(orderId));
         return "order_detail";
     }
 
     @RequestMapping(value = "/deliver", method = RequestMethod.POST)
-    public String list(@RequestParam("id")Integer orderId, @RequestParam("waybillNumber")String waybillNumber){
+    public String deliver(@RequestParam("id")Integer orderId, @RequestParam("waybillNumber")String waybillNumber){
         orderBiz.deliver(orderId, waybillNumber);
         return "redirect:list/all";
     }

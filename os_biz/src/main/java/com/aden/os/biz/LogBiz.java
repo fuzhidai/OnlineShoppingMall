@@ -12,9 +12,7 @@ public interface LogBiz {
 
     void addOperatingLog(Log log);
 
-    List<Log> getSystemLog();
+    List<Log> getLogByType(String type);
 
-    List<Log> getLoginLog();
-
-    List<Log> getOperatingLog();
+    List<Log> getLogByUserId(Integer id);
 }

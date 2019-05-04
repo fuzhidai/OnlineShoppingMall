@@ -1,8 +1,11 @@
 package com.aden.os.controller;
 
+import com.aden.os.biz.EvaluationBiz;
 import com.aden.os.biz.OrderBiz;
+import com.aden.os.biz.OrderProcessingRecordBiz;
 import com.aden.os.entity.CommodityOrder;
 import com.aden.os.entity.CommodityOrderDetail;
+import com.aden.os.entity.Evaluation;
 import com.aden.os.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +23,10 @@ public class OrderController {
 
     @Autowired
     private OrderBiz orderBiz;
+    @Autowired
+    private OrderProcessingRecordBiz orderProcessingRecordBiz;
+    @Autowired
+    private EvaluationBiz evaluationBiz;
 
     @RequestMapping(value = "/buy", method = RequestMethod.POST)
     public String buy(@RequestParam("type")String type, HttpSession session, CommodityOrderDetail commodityOrderDetail, Map<String, Object> model){
@@ -28,7 +35,7 @@ public class OrderController {
         if ("now".equals(type)){
             Integer orderId = orderBiz.buyNow(commodityOrderDetail, userId);
             model.put("DETAIL", orderBiz.get(orderId));
-            return "order_pay";
+            return "order_operating";
 
         } else {
             orderBiz.addToShoppingCart(commodityOrderDetail, userId);
@@ -39,13 +46,33 @@ public class OrderController {
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public String detail(@PathVariable("id")Integer orderId, Map<String, Object> model){
         model.put("DETAIL", orderBiz.get(orderId));
+        model.put("RECORD", orderProcessingRecordBiz.getOrderProcessingRecord(orderId));
         return "order_detail";
     }
 
     @RequestMapping(value = "/to_pay/{id}", method = RequestMethod.GET)
-    public String toPayByGet(@PathVariable("id")Integer orderId, Map<String, Object> model){
+    public String toPay(@PathVariable("id")Integer orderId, Map<String, Object> model){
         model.put("DETAIL", orderBiz.get(orderId));
-        return "order_pay";
+        return "order_operating";
+    }
+
+    @RequestMapping(value = "/to_confirm_receipt/{id}", method = RequestMethod.GET)
+    public String toConfirmReceipt(@PathVariable("id")Integer orderId, Map<String, Object> model){
+        model.put("DETAIL", orderBiz.get(orderId));
+        return "order_operating";
+    }
+
+    @RequestMapping(value = "/to_comment_order/{id}", method = RequestMethod.GET)
+    public String toCommentOrder(@PathVariable("id")Integer orderId, Map<String, Object> model){
+        model.put("DETAIL", orderBiz.get(orderId));
+        return "order_operating";
+    }
+
+    @RequestMapping(value = "/to_comment_commodity/{id}", method = RequestMethod.GET)
+    public String toCommentCommodity(@PathVariable("id")Integer orderDetailId, Map<String, Object> model){
+        model.put("ORDER_ID", orderDetailId);
+        model.put("DETAIL", orderBiz.getCommodityNameByOrderDetail(orderDetailId));
+        return "order_evaluation";
     }
 
     @RequestMapping(value = "/pay", method = RequestMethod.POST)
@@ -63,6 +90,24 @@ public class OrderController {
         }else{
             return "redirect:/user/center";
         }
+    }
+
+    @RequestMapping(value = "/confirm_receipt", method = RequestMethod.POST)
+    public String confirmReceipt(@RequestParam("orderId")Integer orderId){
+        orderBiz.confirmReceipt(orderId);
+        return "redirect:/user/center";
+    }
+
+    @RequestMapping(value = "/comment_order", method = RequestMethod.POST)
+    public String commentOrder(@RequestParam("orderId")Integer orderId){
+        orderBiz.completed(orderId);
+        return "redirect:/user/center";
+    }
+
+    @RequestMapping(value = "/comment_commodity", method = RequestMethod.POST)
+    public String commentCommodity(@RequestParam("orderId")Integer orderId, Evaluation evaluation){
+        evaluationBiz.add(evaluation);
+        return "redirect:/order/to_comment_order/" + orderId;
     }
 
     @RequestMapping(value = "/cart", method = RequestMethod.GET)

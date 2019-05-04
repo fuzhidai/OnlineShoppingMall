@@ -27,6 +27,9 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@RequestParam("phone") String phone, @RequestParam("password") String password, HttpSession session){
         User user = userBiz.verifyInfo(phone, password);
+        if (user == null){
+            return "redirect:to_login";
+        }
         session.setAttribute("user", user);
         return "redirect:/backstage/commodity/list/all";
     }

@@ -34,6 +34,11 @@
         select * from commodity_order_detail where id=#{id};
     </select>
 
+    <select id="getCommodityByOrderDetail" parameterType="Integer" resultType="Commodity">
+        select * from commodity c left join commodity_order_detail cod on cod.commodity_id=c.id
+        where cod.id=#{id};
+    </select>
+
     <select id="selectByOrderId" parameterType="Integer" resultMap="commodityOrderDetail">
         select * from commodity_order_detail where order_id=#{orderId};
     </select>

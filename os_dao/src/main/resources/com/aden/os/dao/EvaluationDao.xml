@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aden.os.dao.EvaluationDao">
+    <resultMap id="evaluation" type="Evaluation">
+        <result column="id" property="id" javaType="Integer"/>
+        <result column="order_detail_id" property="orderId" javaType="Integer"/>
+        <result column="grade" property="grade" javaType="Integer"/>
+        <result column="content" property="content" javaType="String"/>
+        <result column="image" property="image" javaType="String"/>
+        <result column="time" property="time" javaType="java.util.Date"/>
+        <result column="name" property="userName" javaType="String"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Evaluation" useGeneratedKeys="true" keyProperty="id">
+        insert into evaluation(order_detail_id, grade, content, image, time) values (#{orderDetailId}, #{grade}, #{content}, #{image}, #{time});
+    </insert>
+
+    <update id="update" parameterType="Evaluation">
+        update evaluation set order_detail_id=#{orderDetailId}, grade=#{grade}, content=#{content}, image=#{image}, time=#{time}
+        where id=#{id};
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from evaluation where id=#{id};
+    </delete>
+
+    <select id="selectByOrderId" parameterType="Integer" resultMap="evaluation">
+        select e.*, u.name from evaluation e
+            left join commodity_order_detail cod on cod.id=e.order_detail_id
+            right join user u on u.id=(
+                select user_id from commodity_order co where co.id=cod.order_id
+            )
+        where cod.order_id=#{id};
+    </select>
+
+    <select id="selectByCommodityId" parameterType="Integer" resultMap="evaluation">
+        select e.*, u.name from evaluation e
+            left join commodity_order_detail cod on cod.id=e.order_detail_id
+            right join user u on u.id=(
+                select user_id from commodity_order co where co.id=cod.order_id
+            )
+        where cod.commodity_id=#{id};
+    </select>
+</mapper>

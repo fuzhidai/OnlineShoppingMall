@@ -20,6 +20,9 @@
                 <h4><span>
                     <c:choose>
                         <c:when test="${DETAIL.status == 'to_be_delivered'}">待发货</c:when>
+                        <c:when test="${DETAIL.status == 'pending_receipt'}">待收货</c:when>
+                        <c:when test="${DETAIL.status == 'to_be_commented'}">待评价</c:when>
+                        <c:when test="${DETAIL.status == 'completed'}">已完成</c:when>
                     </c:choose>
                 </span></h4>
             </div>
@@ -97,14 +100,23 @@
                 <thead>
                 <tr>
                     <th>时间</th>
-                    <th>商品状态</th>
+                    <th>订单状态</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1,001</td>
-                    <td>Lorem</td>
-                </tr>
+                <c:forEach items="${RECORD}" var="item">
+                    <tr>
+                        <td><fmt:formatDate value="${item.time}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.status == 'to_be_delivered'}">待发货</c:when>
+                                <c:when test="${item.status == 'pending_receipt'}">待收货</c:when>
+                                <c:when test="${item.status == 'to_be_commented'}">待评价</c:when>
+                                <c:when test="${item.status == 'completed'}">已完成</c:when>
+                            </c:choose>
+                        </td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
         </div>

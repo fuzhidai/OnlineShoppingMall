@@ -33,15 +33,11 @@ public class LogBizImpl implements LogBiz {
         logDao.insert(log);
     }
 
-    public List<Log> getSystemLog() {
-        return logDao.selectByType("system");
+    public List<Log> getLogByType(String type) {
+        return logDao.selectByType(type);
     }
 
-    public List<Log> getLoginLog() {
-        return logDao.selectByType("login");
-    }
-
-    public List<Log> getOperatingLog() {
-        return logDao.selectByType("operating");
+    public List<Log> getLogByUserId(Integer id) {
+        return logDao.selectByOperator(id);
     }
 }

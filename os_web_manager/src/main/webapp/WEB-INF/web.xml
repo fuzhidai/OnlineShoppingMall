@@ -18,12 +18,24 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <!-- 用于保存请求的过滤器 -->
+  <filter>
+    <filter-name>springRequestFilter</filter-name>
+    <filter-class>org.springframework.web.filter.RequestContextFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>springRequestFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+
   <!-- 静态资源直接交给 servlet 处理 -->
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>/assets/*</url-pattern>
     <url-pattern>/js/*</url-pattern>
     <url-pattern>/vendor/*</url-pattern>
+    <url-pattern>/css/*</url-pattern>
     <url-pattern>*.js</url-pattern>
     <url-pattern>*.jpg</url-pattern>
     <url-pattern>*.gif</url-pattern>

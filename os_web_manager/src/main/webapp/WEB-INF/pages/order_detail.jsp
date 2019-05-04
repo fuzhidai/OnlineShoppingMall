@@ -56,16 +56,25 @@
                 <thead>
                 <tr>
                     <th>时间</th>
-                    <th>商品状态</th>
+                    <th>订单状态</th>
                     <th>处理人</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1,001</td>
-                    <td>Lorem</td>
-                    <td>Lorem</td>
-                </tr>
+                <c:forEach items="${RECORD}" var="item">
+                    <tr>
+                        <td><fmt:formatDate value="${item.time}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.status == 'to_be_delivered'}">待发货</c:when>
+                                <c:when test="${item.status == 'pending_receipt'}">待收货</c:when>
+                                <c:when test="${item.status == 'to_be_commented'}">待评价</c:when>
+                                <c:when test="${item.status == 'completed'}">已完成</c:when>
+                            </c:choose>
+                        </td>
+                        <td>${item.operator}</td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
         </div>
