@@ -27,6 +27,9 @@
 
         $("#order_deal_record_list").hide();
         $("#order_deal_record").removeClass("active");
+
+        $("#order_evaluation_list").hide();
+        $("#order_evaluation").removeClass("active");
     });
 
     $("#order_deal_record").click(function () {
@@ -35,6 +38,20 @@
 
         $("#order_deal_record_list").show();
         $("#order_deal_record").addClass("active");
+
+        $("#order_evaluation_list").hide();
+        $("#order_evaluation").removeClass("active");
+    });
+
+    $("#order_evaluation").click(function () {
+        $("#order_commodity_info_list").hide();
+        $("#order_commodity_info").removeClass("active");
+
+        $("#order_deal_record_list").hide();
+        $("#order_deal_record").removeClass("active");
+
+        $("#order_evaluation_list").show();
+        $("#order_evaluation").addClass("active");
     });
 
     $("#to_be_delivered").click(function(){

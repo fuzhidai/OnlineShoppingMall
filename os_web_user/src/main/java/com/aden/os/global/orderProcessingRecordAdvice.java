@@ -23,6 +23,23 @@ public class orderProcessingRecordAdvice {
 
     @After("execution(* com.aden.os.controller.OrderController.pay(..))")
     public void settlementRecord(JoinPoint joinPoint){
+        OrderProcessingRecord orderProcessingRecord = initOrderProcessingRecordInstance(joinPoint);
+        orderProcessingRecordBiz.addPayRecord(orderProcessingRecord);
+    }
+
+    @After("execution(* com.aden.os.controller.OrderController.confirmReceipt(..))")
+    public void confirmReceiptRecord(JoinPoint joinPoint){
+        OrderProcessingRecord orderProcessingRecord = initOrderProcessingRecordInstance(joinPoint);
+        orderProcessingRecordBiz.addConfirmReceiptRecord(orderProcessingRecord);
+    }
+
+    @After("execution(* com.aden.os.controller.OrderController.commentOrder(..))")
+    public void commentOrderRecord(JoinPoint joinPoint){
+        OrderProcessingRecord orderProcessingRecord = initOrderProcessingRecordInstance(joinPoint);
+        orderProcessingRecordBiz.addCommentOrderRecord(orderProcessingRecord);
+    }
+
+    private OrderProcessingRecord initOrderProcessingRecordInstance(JoinPoint joinPoint){
 
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest httpServletRequest = attr.getRequest();
@@ -33,6 +50,6 @@ public class orderProcessingRecordAdvice {
         orderProcessingRecord.setOperatorId(user.getId());
         orderProcessingRecord.setOrderId((Integer) joinPoint.getArgs()[0]);
 
-        orderProcessingRecordBiz.addPayRecord(orderProcessingRecord);
+        return orderProcessingRecord;
     }
 }

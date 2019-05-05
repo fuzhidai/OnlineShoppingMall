@@ -14,7 +14,7 @@ public interface EvaluationDao {
 
     void delete(Integer id);
 
-    Evaluation selectByOrderId(Integer id);
+    List<Evaluation> selectByOrderId(Integer id);
 
     List<Evaluation> selectByCommodityId(Integer id);
 }

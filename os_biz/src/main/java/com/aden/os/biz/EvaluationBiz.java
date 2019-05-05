@@ -8,6 +8,6 @@ public interface EvaluationBiz {
 
     void add(Evaluation evaluation);
 
-    Evaluation getByOrderId(Integer id);
+    List<Evaluation> getByOrderId(Integer id);
 
     List<Evaluation> getByCommodityId(Integer id);}

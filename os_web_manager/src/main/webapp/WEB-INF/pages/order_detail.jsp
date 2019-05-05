@@ -13,6 +13,7 @@
     <ul class="nav nav-tabs">
         <li role="presentation" class="active" id="order_commodity_info"><a>商品详情</a></li>
         <li role="presentation" id="order_deal_record"><a>处理记录</a></li>
+        <li role="presentation" id="order_evaluation"><a>订单评价</a></li>
     </ul>
 
     <div id="order_commodity_info_list">
@@ -78,6 +79,25 @@
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <div id="order_evaluation_list" style="display: none;">
+        <c:forEach items="${EVALUATION}" var="item">
+            <div class="row">
+                <div class="col-lg-offset-1 col-lg-10">
+                    <div>
+                        <h4>${item.userName}<small style="margin-left: 20px;">${item.grade} 星</small></h4>
+                    </div>
+                    <div style="margin: 20px 0 20px 0;" class="row">
+                        <div class="col-lg-offset-1 col-lg-10">
+                                ${item.content}
+                        </div>
+                    </div>
+                    <div style="float: right;"><fmt:formatDate value="${item.time}" pattern="yyyy-MM-dd HH:mm"/></div>
+                </div>
+            </div>
+            <div class="page-header"></div>
+        </c:forEach>
     </div>
 </div>
 

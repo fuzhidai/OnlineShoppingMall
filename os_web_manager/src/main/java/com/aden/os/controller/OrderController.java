@@ -1,5 +1,6 @@
 package com.aden.os.controller;
 
+import com.aden.os.biz.EvaluationBiz;
 import com.aden.os.biz.OrderBiz;
 import com.aden.os.biz.OrderProcessingRecordBiz;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class OrderController {
     private OrderBiz orderBiz;
     @Autowired
     private OrderProcessingRecordBiz orderProcessingRecordBiz;
+    @Autowired
+    private EvaluationBiz evaluationBiz;
 
     @RequestMapping(value = "/list/{type}", method = RequestMethod.GET)
     public String list(@PathVariable("type")String status, Map<String, Object> model){
@@ -44,6 +47,7 @@ public class OrderController {
         model.put("TYPE", type);
         model.put("DETAIL", orderBiz.get(orderId));
         model.put("RECORD", orderProcessingRecordBiz.getOrderProcessingRecord(orderId));
+        model.put("EVALUATION", evaluationBiz.getByOrderId(orderId));
         return "order_detail";
     }
 

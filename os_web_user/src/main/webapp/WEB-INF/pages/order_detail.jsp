@@ -77,6 +77,9 @@
                         <td>￥ <fmt:formatNumber value="${item.commodityPrice * item.commodityQuantity}" pattern="#0.00"/></td>
                         <td>
                             <a href="/commodity/detail/${item.commodityId}">查看详情</a>
+                            <c:if test="${DETAIL.status == 'to_be_commented'}">
+                                <a href="/order/to_confirm_receipt/${item.id}" style="margin-right: 20px;">评价</a>
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>

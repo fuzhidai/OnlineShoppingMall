@@ -20,7 +20,7 @@ public class EvaluationBizImpl implements EvaluationBiz {
         evaluationDao.insert(evaluation);
     }
 
-    public Evaluation getByOrderId(Integer id) {
+    public List<Evaluation> getByOrderId(Integer id) {
         return evaluationDao.selectByOrderId(id);
     }
 

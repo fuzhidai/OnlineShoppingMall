@@ -10,5 +10,9 @@ public interface OrderProcessingRecordBiz {
 
     void addDeliverRecord(OrderProcessingRecord orderProcessingRecord);
 
+    void addConfirmReceiptRecord(OrderProcessingRecord orderProcessingRecord);
+
+    void addCommentOrderRecord(OrderProcessingRecord orderProcessingRecord);
+
     List<OrderProcessingRecord> getOrderProcessingRecord(Integer orderId);
 }

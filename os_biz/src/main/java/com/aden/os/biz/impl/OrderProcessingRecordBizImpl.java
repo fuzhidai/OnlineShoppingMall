@@ -27,6 +27,18 @@ public class OrderProcessingRecordBizImpl implements OrderProcessingRecordBiz {
         orderProcessingRecordDao.insert(orderProcessingRecord);
     }
 
+    public void addConfirmReceiptRecord(OrderProcessingRecord orderProcessingRecord) {
+        orderProcessingRecord.setStatus("to_be_commented");
+        orderProcessingRecord.setTime(new Date());
+        orderProcessingRecordDao.insert(orderProcessingRecord);
+    }
+
+    public void addCommentOrderRecord(OrderProcessingRecord orderProcessingRecord) {
+        orderProcessingRecord.setStatus("completed");
+        orderProcessingRecord.setTime(new Date());
+        orderProcessingRecordDao.insert(orderProcessingRecord);
+    }
+
     public List<OrderProcessingRecord> getOrderProcessingRecord(Integer orderId) {
         return orderProcessingRecordDao.selectByOrderId(orderId);
     }
