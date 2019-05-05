@@ -1,6 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.aden.os.entity.CommodityOrder" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="com.aden.os.entity.Commodity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -49,32 +50,69 @@
 
         <div class="row">
 
+            <%
+                List<CommodityOrder> toBePaid = new ArrayList<>();
+                List<CommodityOrder> toBeDelivered = new ArrayList<>();
+                List<CommodityOrder> pendingReceipt = new ArrayList<>();
+                List<CommodityOrder> comment = new ArrayList<>();
+                List<CommodityOrder> completed = new ArrayList<>();
+                List<CommodityOrder> all = (List<CommodityOrder>) request.getAttribute("LIST");
+
+                for (CommodityOrder commodityOrder: all)
+                {
+                    switch (commodityOrder.getStatus()){
+                        case "to_be_paid":
+                            toBePaid.add(commodityOrder);
+                            break;
+                        case "to_be_delivered":
+                            toBeDelivered.add(commodityOrder);
+                            break;
+                        case "pending_receipt":
+                            pendingReceipt.add(commodityOrder);
+                            break;
+                        case "to_be_commented":
+                            comment.add(commodityOrder);
+                            break;
+                        case "completed":
+                            completed.add(commodityOrder);
+                            default:break;
+                    }
+                }
+
+                request.setAttribute("toBePaidList", toBePaid);
+                request.setAttribute("toBeDelivered", toBeDelivered);
+                request.setAttribute("pendingReceipt", pendingReceipt);
+                request.setAttribute("comment", comment);
+                request.setAttribute("completed", completed);
+
+            %>
+
             <div class="page-header" style="margin-top: 5%;">
                 <h3>订单记录</h3>
             </div>
             <div class="col-lg-2">
                 <h5>待支付</h5>
-                <h3><span>8件</span></h3>
+                <h3><span>${toBePaidList.size()}件</span></h3>
             </div>
             <div class="col-lg-2">
                 <h5>待发货</h5>
-                <h3><span>12件</span></h3>
+                <h3><span>${toBeDelivered.size()}件</span></h3>
             </div>
             <div class="col-lg-2">
-                <h5>待发货</h5>
-                <h3><span>1件</span></h3>
+                <h5>待收货</h5>
+                <h3><span>${pendingReceipt.size()}件</span></h3>
             </div>
             <div class="col-lg-2">
                 <h5>待评价</h5>
-                <h3><span>3件</span></h3>
+                <h3><span>${comment.size()}件</span></h3>
             </div>
             <div class="col-lg-2">
                 <h5>已完成</h5>
-                <h3><span>5件</span></h3>
+                <h3><span>${completed.size()}件</span></h3>
             </div>
             <div class="col-lg-2">
                 <h5>全部订单</h5>
-                <h3><span>21件</span></h3>
+                <h3><span>${LIST.size()}件</span></h3>
             </div>
         </div>
 
@@ -108,34 +146,32 @@
                 </thead>
                 <tbody>
 
-                <c:forEach items="${LIST}" var="item">
-                    <c:if test="${item.status == 'to_be_paid'}">
-                        <tr>
-                            <td>${item.id}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${item.status == 'to_be_paid'}">待支付</c:when>
-                                </c:choose>
-                            </td>
-                            <td>￥ ${item.totalAmount}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${item.waybillNumber == null}">暂未发货</c:when>
-                                    <c:when test="${item.waybillNumber != null}">${item.waybillNumber}</c:when>
-                                </c:choose>
-                            </td>
-                            <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-                            <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-                            <td>
-                                <a href="/order/to_pay/${item.id}" style="margin-right: 20px;">支付</a>
-                                <a id="cancel_btn" href="#" style="margin-right: 20px;">取消</a>
-                                <form id="cancel_order" action="/order/cancel" method="post">
-                                    <input type="hidden" name="type" value="center">
-                                    <input type="hidden" name="id" value="${item.id}">
-                                </form>
-                            </td>
-                        </tr>
-                    </c:if>
+                <c:forEach items="${toBePaidList}" var="item">
+                    <tr>
+                        <td>${item.id}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.status == 'to_be_paid'}">待支付</c:when>
+                            </c:choose>
+                        </td>
+                        <td>￥ ${item.totalAmount}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.waybillNumber == null}">暂未发货</c:when>
+                                <c:when test="${item.waybillNumber != null}">${item.waybillNumber}</c:when>
+                            </c:choose>
+                        </td>
+                        <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td>
+                            <a href="/order/to_pay/${item.id}" style="margin-right: 20px;">支付</a>
+                            <a id="cancel_btn" href="#" style="margin-right: 20px;">取消</a>
+                            <form id="cancel_order" action="/order/cancel" method="post">
+                                <input type="hidden" name="type" value="center">
+                                <input type="hidden" name="id" value="${item.id}">
+                            </form>
+                        </td>
+                    </tr>
                 </c:forEach>
 
                 </tbody>
@@ -159,30 +195,28 @@
                 </thead>
                 <tbody>
 
-                <c:forEach items="${LIST}" var="item">
-                    <c:if test="${item.status == 'to_be_delivered'}">
-                        <tr>
-                            <td>${item.id}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${item.status == 'to_be_delivered'}">待发货</c:when>
-                                </c:choose>
-                            </td>
-                            <td>￥ ${item.totalAmount}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${item.waybillNumber == null}">暂未发货</c:when>
-                                    <c:when test="${item.waybillNumber != null}">${item.waybillNumber}</c:when>
-                                </c:choose>
-                            </td>
-                            <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-                            <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-                            <td>
-                                <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
-                                <a href="#" style="margin-right: 20px;">催单</a>
-                            </td>
-                        </tr>
-                    </c:if>
+                <c:forEach items="${toBeDelivered}" var="item">
+                    <tr>
+                        <td>${item.id}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.status == 'to_be_delivered'}">待发货</c:when>
+                            </c:choose>
+                        </td>
+                        <td>￥ ${item.totalAmount}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.waybillNumber == null}">暂未发货</c:when>
+                                <c:when test="${item.waybillNumber != null}">${item.waybillNumber}</c:when>
+                            </c:choose>
+                        </td>
+                        <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td>
+                            <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
+                            <a href="#" style="margin-right: 20px;">催单</a>
+                        </td>
+                    </tr>
                 </c:forEach>
 
                 </tbody>
@@ -206,30 +240,28 @@
                 </thead>
                 <tbody>
 
-                <c:forEach items="${LIST}" var="item">
-                    <c:if test="${item.status == 'pending_receipt'}">
-                        <tr>
-                            <td>${item.id}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${item.status == 'pending_receipt'}">待收货</c:when>
-                                </c:choose>
-                            </td>
-                            <td>￥ ${item.totalAmount}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${item.waybillNumber == null}">暂未发货</c:when>
-                                    <c:when test="${item.waybillNumber != null}">${item.waybillNumber}</c:when>
-                                </c:choose>
-                            </td>
-                            <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-                            <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-                            <td>
-                                <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
-                                <a href="/order/to_confirm_receipt/${item.id}" style="margin-right: 20px;">收货</a>
-                            </td>
-                        </tr>
-                    </c:if>
+                <c:forEach items="${pendingReceipt}" var="item">
+                    <tr>
+                        <td>${item.id}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.status == 'pending_receipt'}">待收货</c:when>
+                            </c:choose>
+                        </td>
+                        <td>￥ ${item.totalAmount}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.waybillNumber == null}">暂未发货</c:when>
+                                <c:when test="${item.waybillNumber != null}">${item.waybillNumber}</c:when>
+                            </c:choose>
+                        </td>
+                        <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td>
+                            <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
+                            <a href="/order/to_confirm_receipt/${item.id}" style="margin-right: 20px;">收货</a>
+                        </td>
+                    </tr>
                 </c:forEach>
 
                 </tbody>
@@ -254,25 +286,23 @@
                 </thead>
                 <tbody>
 
-                <c:forEach items="${LIST}" var="item">
-                    <c:if test="${item.status == 'to_be_commented'}">
-                        <tr>
-                            <td>${item.id}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${item.status == 'to_be_commented'}">待评价</c:when>
-                                </c:choose>
-                            </td>
-                            <td>￥ ${item.totalAmount}</td>
-                            <td>${item.waybillNumber}</td>
-                            <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-                            <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-                            <td>
-                                <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
-                                <a href="/order/to_comment_order/${item.id}" style="margin-right: 20px;">评价</a>
-                            </td>
-                        </tr>
-                    </c:if>
+                <c:forEach items="${comment}" var="item">
+                    <tr>
+                        <td>${item.id}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.status == 'to_be_commented'}">待评价</c:when>
+                            </c:choose>
+                        </td>
+                        <td>￥ ${item.totalAmount}</td>
+                        <td>${item.waybillNumber}</td>
+                        <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td>
+                            <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
+                            <a href="/order/to_comment_order/${item.id}" style="margin-right: 20px;">评价</a>
+                        </td>
+                    </tr>
                 </c:forEach>
 
                 </tbody>
@@ -298,24 +328,22 @@
                 </thead>
                 <tbody>
 
-                <c:forEach items="${LIST}" var="item">
-                    <c:if test="${item.status == 'completed'}">
-                        <tr>
-                            <td>${item.id}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${item.status == 'completed'}">已完成</c:when>
-                                </c:choose>
-                            </td>
-                            <td>￥ ${item.totalAmount}</td>
-                            <td>${item.waybillNumber}</td>
-                            <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-                            <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-                            <td>
-                                <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
-                            </td>
-                        </tr>
-                    </c:if>
+                <c:forEach items="${completed}" var="item">
+                    <tr>
+                        <td>${item.id}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.status == 'completed'}">已完成</c:when>
+                            </c:choose>
+                        </td>
+                        <td>￥ ${item.totalAmount}</td>
+                        <td>${item.waybillNumber}</td>
+                        <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td>
+                            <a href="/order/detail/${item.id}" style="margin-right: 20px;">详情</a>
+                        </td>
+                    </tr>
                 </c:forEach>
 
                 </tbody>

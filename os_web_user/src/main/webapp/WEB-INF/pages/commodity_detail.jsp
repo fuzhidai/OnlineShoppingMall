@@ -68,7 +68,23 @@
     </div>
 
     <div id="mall_comment_list" style="display: none">
-        商品评论
+
+        <c:forEach items="${EVALUATION}" var="item">
+            <div class="row">
+                <div class="col-lg-offset-1 col-lg-10">
+                    <div>
+                        <h4>${item.userName}<small style="margin-left: 20px;">${item.grade} 星</small></h4>
+                    </div>
+                    <div style="margin: 20px 0 20px 0;" class="row">
+                        <div class="col-lg-offset-1 col-lg-10">
+                            ${item.content}
+                        </div>
+                    </div>
+                    <div style="float: right;"><fmt:formatDate value="${item.time}" pattern="yyyy-MM-dd HH:mm"/></div>
+                    <div class="page-header"></div>
+                </div>
+            </div>
+        </c:forEach>
     </div>
 
     <!-- 销售记录列表 -->
@@ -94,6 +110,9 @@
                         <td>
                             <c:choose>
                                 <c:when test="${item.status == 'to_be_delivered'}">待发货</c:when>
+                                <c:when test="${item.status == 'pending_receipt'}">待收货</c:when>
+                                <c:when test="${item.status == 'to_be_commented'}">待评价</c:when>
+                                <c:when test="${item.status == 'completed'}">已完成</c:when>
                             </c:choose>
                         </td>
                         <td><fmt:formatDate value="${item.time}" pattern="yyyy-MM-dd HH:mm"/></td>

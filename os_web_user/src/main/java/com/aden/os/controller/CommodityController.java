@@ -1,6 +1,7 @@
 package com.aden.os.controller;
 
 import com.aden.os.biz.CommodityBiz;
+import com.aden.os.biz.EvaluationBiz;
 import com.aden.os.biz.OrderBiz;
 import com.aden.os.biz.UserBiz;
 import com.aden.os.dto.CommoditySalesRecord;
@@ -27,6 +28,8 @@ public class CommodityController {
     private OrderBiz orderBiz;
     @Autowired
     private UserBiz userBiz;
+    @Autowired
+    private EvaluationBiz evaluationBiz;
 
     @RequestMapping(value = "/homepage", method = RequestMethod.GET)
     public String listAll(Map<String, Object> model){
@@ -60,6 +63,7 @@ public class CommodityController {
         }
 
         model.put("SALES_RECORD", commoditySalesRecordList);
+        model.put("EVALUATION", evaluationBiz.getByCommodityId(id));
         return "commodity_detail";
     }
 }
