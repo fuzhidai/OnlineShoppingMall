@@ -64,6 +64,13 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="shelf_category" class="col-sm-3 control-label">上架时间</label>
+            <div class="col-sm-6">
+                <input type="datetime-local" name="addedTime"/>
+                <small>若为立即上架则无需填写</small>
+            </div>
+        </div>
+        <div class="form-group">
             <label for="detailedIntroduction" class="col-sm-3 control-label">详细介绍</label>
             <div class="col-sm-6">
                 <c:choose>

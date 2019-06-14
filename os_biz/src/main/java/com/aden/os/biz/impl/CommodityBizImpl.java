@@ -22,7 +22,15 @@ public class CommodityBizImpl implements CommodityBiz {
     public void add(Commodity commodity) {
         commodity.setCreateTime(new Date());
         commodity.setUpdateTime(new Date());
-        commodity.setAddedTime(new Date());
+
+        // 若未设置上架时间则为立即上架，否则为定时上架
+        if (commodity.getAddedTime() == null){
+            commodity.setAddedTime(new Date());
+        }else {
+
+            
+        }
+
         commodity.setSalesVolume(0);
         commodity.setImage(null);
         commodityDao.insert(commodity);

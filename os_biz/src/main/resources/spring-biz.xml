@@ -2,7 +2,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/context
@@ -10,13 +10,14 @@
     http://www.springframework.org/schema/aop
     http://www.springframework.org/schema/aop/spring-aop.xsd
     http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx.xsd">
+    http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
     <import resource="spring-dao.xml"/>
     
     <!-- 开启自动扫描 -->
     <context:component-scan base-package="com.aden.os.biz"/>
     <aop:aspectj-autoproxy/>
+    <task:annotation-driven/>
 
     <!-- 声明式事务 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -36,5 +37,38 @@
         <aop:pointcut id="txPointcut" expression="execution(* com.aden.os.biz.*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
     </aop:config>
+
+
+    <bean id="springUtils" class="com.aden.os.biz.job.SpringUtils" />
+
+<!--        &lt;!&ndash; 配置Job类 &ndash;&gt;-->
+<!--    <bean id="myJob" class="com.aden.os.biz.job.CommodityJob"></bean>-->
+
+<!--    &lt;!&ndash; 配置JobDetail &ndash;&gt;-->
+<!--    <bean id="springQtzJobMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+<!--        &lt;!&ndash; 执行目标job &ndash;&gt;-->
+<!--        <property name="targetObject" ref="myJob"></property>-->
+
+<!--        &lt;!&ndash; 要执行的方法 &ndash;&gt;-->
+<!--        <property name="targetMethod" value="execute"></property>-->
+<!--    </bean>-->
+
+<!--    &lt;!&ndash; 配置tirgger触发器 &ndash;&gt;-->
+<!--    <bean id="cronTriggerFactoryBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+<!--        &lt;!&ndash; jobDetail &ndash;&gt;-->
+<!--        <property name="jobDetail" ref="springQtzJobMethod"></property>-->
+
+<!--        &lt;!&ndash; cron表达式，执行时间  每5秒执行一次 &ndash;&gt;-->
+<!--        <property name="cronExpression" value="0/5 * * * * ?"></property>-->
+<!--    </bean>-->
+
+<!--    &lt;!&ndash; 配置调度工厂 &ndash;&gt;-->
+<!--    <bean id="springJobSchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+<!--        <property name="triggers">-->
+<!--            <list>-->
+<!--                <ref bean="cronTriggerFactoryBean"></ref>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--    </bean>-->
 
 </beans>
