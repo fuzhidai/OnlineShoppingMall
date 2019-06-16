@@ -16,7 +16,7 @@ public interface OrderBiz {
 
     Integer buyNow(CommodityOrderDetail commodityOrderDetail, Integer userId);
 
-    Integer addToShoppingCart(CommodityOrderDetail commodityOrderDetail, Integer userId);
+    void addToShoppingCart(CommodityOrderDetail commodityOrderDetail, Integer userId);
 
     CommodityOrder settlement(Integer userId);
 

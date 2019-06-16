@@ -47,13 +47,12 @@ public class OrderBizImpl implements OrderBiz {
 
     public Integer buyNow(CommodityOrderDetail commodityOrderDetail, Integer userId) {
 
-        Integer orderId = addToShoppingCart(commodityOrderDetail, userId);
-        settlement(orderId);
-        return orderId;
+        addToShoppingCart(commodityOrderDetail, userId);
+        return settlement(userId).getId();
     }
 
     // 购物车保存至内存中
-    public Integer addToShoppingCart(CommodityOrderDetail commodityOrderDetail, Integer userId) {
+    public void addToShoppingCart(CommodityOrderDetail commodityOrderDetail, Integer userId) {
 
         // 查找当前购物车中是否存在当前商品的订单详情
         Boolean hexists = jedisClient.hexists(REDIS_CART + ":" + userId, String.valueOf(commodityOrderDetail.getCommodityId()));
@@ -74,7 +73,6 @@ public class OrderBizImpl implements OrderBiz {
 
         // 将当前商品的订单详情更新至内存中
         jedisClient.hset(REDIS_CART + ":" + userId, String.valueOf(commodityOrderDetail.getCommodityId()), JSON.toJSONString(commodityOrderDetail));
-        return 1;
     }
 
     // 购物车保存至数据库
