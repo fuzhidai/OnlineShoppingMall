@@ -69,6 +69,25 @@
 
                 </tbody>
             </table>
+
+            <div class="col-lg-offset-4 col-lg-7">
+
+                <span>第${INFO.pageNum}页</span>
+                <span style="margin-right: 10px;">/ 共${INFO.pages}页</span>
+                <a href="/backstage/order/list/${TYPE}/${INFO.navigateFirstPage}">首页</a>
+                <a href="/backstage/order/list/${TYPE}/${INFO.prePage}">上一页</a>
+                <c:forEach items="${INFO.navigatepageNums}" var="item">
+                    <a href="/backstage/order/list/${TYPE}/${item}">${item}</a>
+                </c:forEach>
+                <a href="/backstage/order/list/${TYPE}/${INFO.nextPage}">下一页</a>
+                <a href="/backstage/order/list/${TYPE}/${INFO.navigateLastPage}">末页</a>
+                <span style="margin-left: 10px;">跳转到</span>
+                <input id="navigate_page_num" type="number" style="width: 50px;text-align: center;"/>
+                <input id="current_page_model" type="hidden" value="order"/>
+                <input id="current_page_type" type="hidden" value="${TYPE}"/>
+                <button id="navigate_page_btn">跳转</button>
+
+            </div>
         </div>
     </div>
 </div>

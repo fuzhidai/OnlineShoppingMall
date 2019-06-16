@@ -30,9 +30,9 @@
                         <td>${item.commodityQuantity} 件</td>
                         <td>￥ <fmt:formatNumber value="${item.commodityPrice * item.commodityQuantity}" pattern="#0.00"/></td>
                         <td>
-                            <a href="#" style="margin-right: 20px;">增加</a>
-                            <a href="#" style="margin-right: 20px;">减少</a>
-                            <a href="#" style="margin-right: 20px;">移除</a>
+                            <a href="/order/increase/${DETAIL.userId}/${item.commodityId}" style="margin-right: 20px;">增加</a>
+                            <a href="/order/decrease/${DETAIL.userId}/${item.commodityId}" style="margin-right: 20px;">减少</a>
+                            <a href="/order/remove/${DETAIL.userId}/${item.commodityId}" style="margin-right: 20px;">移除</a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -44,8 +44,8 @@
     <div style="margin-top: 40px; margin-bottom: 40px;">
         <div class="col-lg-6"></div>
         <div class="col-lg-2"><h4>已选商品 ${DETAIL.commodityQuantity} 件</h4></div>
-        <div class="col-lg-2"><h4>合计：￥${DETAIL.totalAmount}</h4></div>
-        <form action="/order/to_pay/${DETAIL.id}" method="get">
+        <div class="col-lg-2"><h4>合计：￥<fmt:formatNumber value="${DETAIL.totalAmount}" pattern="#0.00"/></h4></div>
+        <form action="/order/to_pay_cart/${DETAIL.userId}" method="get">
             <button class="btn btn-primary col-lg-2" type="submit">提交订单</button>
         </form>
     </div>

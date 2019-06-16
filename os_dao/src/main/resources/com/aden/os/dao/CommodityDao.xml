@@ -35,29 +35,29 @@
     </delete>
 
     <select id="select" parameterType="Integer" resultMap="commodity">
-        select * from commodity where id=#{id};
+        select * from commodity where id=#{id}
     </select>
 
     <select id="selectAll" resultMap="commodity">
-        select * from commodity;
+        select * from commodity
     </select>
 
     <select id="selectByType" parameterType="Integer" resultMap="commodity">
-        select * from commodity where type_id = #{_parameter};
+        select * from commodity where type_id = #{_parameter}
     </select>
 
     <select id="selectByStatus" parameterType="String" resultMap="commodity">
-        select * from commodity where status = #{_parameter};
+        select * from commodity where status = #{_parameter}
     </select>
 
     <select id="selectEveryTypeTopThree" resultMap="commodity">
         select * from commodity c1
         where 3 > (
             select COUNT(*) from commodity c2 where c1.type_id = c2.type_id and c2.id > c1.id
-        ) order by type_id, sales_volume desc ;
+        ) order by type_id, sales_volume desc
     </select>
 
     <select id="selectTypes" resultType="String">
-        select name from commodity_category where id=#{id};
+        select name from commodity_category where id=#{id}
     </select>
 </mapper>

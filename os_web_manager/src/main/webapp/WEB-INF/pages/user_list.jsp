@@ -103,7 +103,7 @@
                                 <td><fmt:formatDate value="${item.lastLogin}" pattern="yyyy-MM-dd HH:mm"/></td>
                                 <td>
                                     <a href="/backstage/user/detail/${item.id}" style="margin-right: 20px;">详情</a>
-                                    <a href="/backstage/log/list/${item.id}">操作记录</a>
+                                    <a href="/backstage/log/personal/${item.id}/list">操作记录</a>
                                 </td>
                             </tr>
                         </c:forEach>

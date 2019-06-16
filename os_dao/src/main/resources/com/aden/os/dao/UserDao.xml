@@ -34,6 +34,10 @@
         select * from user where id=#{id};
     </select>
 
+    <select id="selectName" parameterType="Integer" resultType="String">
+        select name from user where id=#{_parameter};
+    </select>
+
     <select id="selectByPhone" parameterType="String" resultMap="user">
         select * from user where phone=#{_parameter};
     </select>

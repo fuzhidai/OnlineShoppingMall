@@ -122,16 +122,16 @@
             </ul>
             <ul class="nav nav-sidebar">
                 <c:choose>
-                    <c:when test="${TYPE=='operating'}"><li class="active"><a href="/backstage/log/operating/list">操作日志</a></li></c:when>
-                    <c:when test="${TYPE!='operating'}"><li><a href="/backstage/log/operating/list">操作日志</a></li></c:when>
+                    <c:when test="${TYPE=='operating'}"><li class="active"><a href="/backstage/log/list/operating">操作日志</a></li></c:when>
+                    <c:when test="${TYPE!='operating'}"><li><a href="/backstage/log/list/operating">操作日志</a></li></c:when>
                 </c:choose>
                 <c:choose>
-                    <c:when test="${TYPE=='login'}"><li class="active"><a href="/backstage/log/login/list">登陆日志</a></li></c:when>
-                    <c:when test="${TYPE!='login'}"><li><a href="/backstage/log/login/list">登陆日志</a></li></c:when>
+                    <c:when test="${TYPE=='login'}"><li class="active"><a href="/backstage/log/list/login">登陆日志</a></li></c:when>
+                    <c:when test="${TYPE!='login'}"><li><a href="/backstage/log/list/login">登陆日志</a></li></c:when>
                 </c:choose>
                 <c:choose>
-                    <c:when test="${TYPE=='system'}"><li class="active"><a href="/backstage/log/system/list">系统日志</a></li></c:when>
-                    <c:when test="${TYPE!='system'}"><li><a href="/backstage/log/system/list">系统日志</a></li></c:when>
+                    <c:when test="${TYPE=='system'}"><li class="active"><a href="/backstage/log/list/system">系统日志</a></li></c:when>
+                    <c:when test="${TYPE!='system'}"><li><a href="/backstage/log/list/system">系统日志</a></li></c:when>
                 </c:choose>
             </ul>
         </div>

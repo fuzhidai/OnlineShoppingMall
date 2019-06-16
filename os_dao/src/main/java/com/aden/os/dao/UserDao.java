@@ -16,6 +16,8 @@ public interface UserDao {
 
     User select(Integer id);
 
+    String selectName(Integer id);
+
     User selectByPhone(String phone);
 
     List<User> selectByPermissionHigher(Integer id);

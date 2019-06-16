@@ -24,7 +24,6 @@ public class LogAdvice {
 
     @After("execution(* com.aden.os.controller.*.*(..)) && !execution(* com.aden.os.controller.*.*Login(..)) && !execution(* com.aden.os.controller.*.login(..))")
     public void operatingLog(JoinPoint joinPoint){
-
         Log log = initLogInstance(joinPoint);
         log.setResult("success");
         logBiz.addOperatingLog(log);

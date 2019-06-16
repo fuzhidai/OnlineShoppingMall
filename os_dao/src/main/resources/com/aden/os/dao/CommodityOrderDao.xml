@@ -29,22 +29,22 @@
     </delete>
 
     <select id="select" parameterType="Integer" resultMap="commodityOrder">
-        select * from commodity_order where id=#{id};
+        select * from commodity_order where id=#{id}
     </select>
 
     <select id="selectByUserIdAndStatus" resultMap="commodityOrder">
-        select * from commodity_order where user_id=#{param1} and status=#{param2};
+        select * from commodity_order where user_id=#{param1} and status=#{param2}
     </select>
 
     <select id="selectByUserId" parameterType="Integer" resultMap="commodityOrder">
-        select * from commodity_order where user_id=#{userId};
+        select * from commodity_order where user_id=#{userId}
     </select>
 
     <select id="selectByStatus" resultMap="commodityOrder">
-        select * from commodity_order where status=#{param1};
+        select * from commodity_order where status=#{param1}
     </select>
 
     <select id="selectAll" resultMap="commodityOrder">
-        select * from commodity_order;
+        select * from commodity_order
     </select>
 </mapper>

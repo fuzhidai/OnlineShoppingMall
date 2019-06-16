@@ -18,7 +18,7 @@ public interface OrderBiz {
 
     Integer addToShoppingCart(CommodityOrderDetail commodityOrderDetail, Integer userId);
 
-    void settlement(Integer userId);
+    CommodityOrder settlement(Integer userId);
 
     void pay(Integer orderId);
 
@@ -28,9 +28,17 @@ public interface OrderBiz {
 
     void remove(Integer id);
 
+    void increaseCommodityQuantity(Integer userId, Integer commodityId);
+
+    void decreaseCommodityQuantity(Integer userId, Integer commodityId);
+
+    void removeCommodity(Integer userId, Integer commodityId);
+
     CommodityOrder get(Integer id);
 
     CommodityOrder getCart(Integer userId);
+
+    void clearCart(Integer userId);
 
     String getCommodityNameByOrderDetail(Integer id);
 

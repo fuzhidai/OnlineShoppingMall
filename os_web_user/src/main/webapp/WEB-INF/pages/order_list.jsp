@@ -32,11 +32,12 @@
                     <th>创建时间</th>
                     <th>
                         <c:choose>
-                            <c:when test="${item.status == 'to_be_paid'}">结算时间</c:when>
-                            <c:when test="${item.status == 'to_be_delivered'}">支付时间</c:when>
-                            <c:when test="${item.status == 'pending_receipt'}">发货时间</c:when>
-                            <c:when test="${item.status == 'to_be_commented'}">确认收货</c:when>
-                            <c:when test="${item.status == 'completed'}">完成时间</c:when>
+                            <c:when test="${TYPE == 'all'}">状态更新</c:when>
+                            <c:when test="${TYPE == 'to_be_paid'}">结算时间</c:when>
+                            <c:when test="${TYPE == 'to_be_delivered'}">支付时间</c:when>
+                            <c:when test="${TYPE == 'pending_receipt'}">发货时间</c:when>
+                            <c:when test="${TYPE == 'to_be_commented'}">确认收货</c:when>
+                            <c:when test="${TYPE == 'completed'}">完成时间</c:when>
                         </c:choose>
                     </th>
                     <th>操作</th>

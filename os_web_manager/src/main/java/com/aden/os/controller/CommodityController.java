@@ -4,6 +4,9 @@ import com.aden.os.biz.CommodityBiz;
 import com.aden.os.biz.CommodityCategoryBiz;
 import com.aden.os.entity.Commodity;
 import com.aden.os.entity.CommodityCategory;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,12 +61,21 @@ public class CommodityController {
     }
 
     @RequestMapping("/list/{status}")
-    public String list(@PathVariable("status")String status, Map<String, Object> model){
-        model.put("LIST", commodityBiz.getByStatus(status));
+    public String list(@PathVariable("status")String status){
+        return "redirect:" + status + "/1";
+    }
+
+    @RequestMapping("/list/{status}/{index}")
+    public String list(@PathVariable("status")String status, @PathVariable("index")Integer index, Map<String, Object> model){
+
+        Page<?> page = PageHelper.startPage(index, 10);
+        List<Commodity> commodities = commodityBiz.getByStatus(status);
+        PageInfo<?> pageInfo = page.toPageInfo();
+
+        model.put("LIST", commodities);
+        model.put("INFO", pageInfo);
         model.put("TYPE", status);
         return "commodity_list";
     }
-
-
 
 }

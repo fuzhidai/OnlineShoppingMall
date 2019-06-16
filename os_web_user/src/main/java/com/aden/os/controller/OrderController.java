@@ -50,9 +50,28 @@ public class OrderController {
         return "order_detail";
     }
 
-    @RequestMapping(value = "/to_pay/{id}", method = RequestMethod.GET)
-    public String toPay(@PathVariable("id")Integer orderId, Map<String, Object> model){
+    /**
+     * 通过订单号跳转支付页面
+     * @param orderId 订单编号
+     * @param model 页面数据
+     * @return 页面视图
+     */
+    @RequestMapping(value = "/to_pay/{orderId}", method = RequestMethod.GET)
+    public String toPay(@PathVariable("orderId")Integer orderId, Map<String, Object> model){
         model.put("DETAIL", orderBiz.get(orderId));
+        return "order_operating";
+    }
+
+    /**
+     * 在购物车通过用户编号跳转支付页面
+     * @param userId 用户编号
+     * @param model 页面数据
+     * @return 页面视图
+     */
+    @RequestMapping(value = "/to_pay_cart/{userId}", method = RequestMethod.GET)
+    public String toPayCart(@PathVariable("userId")Integer userId, Map<String, Object> model){
+        CommodityOrder commodityOrder = orderBiz.settlement(userId);
+        model.put("DETAIL", commodityOrder);
         return "order_operating";
     }
 
@@ -124,5 +143,41 @@ public class OrderController {
         model.put("TYPE", type);
         model.put("LIST", orderBiz.getOrderList(user.getId(), type));
         return "order_list";
+    }
+
+    /**
+     * 增加购物车中商品的数量
+     * @param userId 用户编号
+     * @param commodityId 商品编号
+     * @return 刷新当前页面
+     */
+    @RequestMapping(value = "/increase/{userId}/{commodityId}", method = RequestMethod.GET)
+    public String increase(@PathVariable("userId")Integer userId, @PathVariable("commodityId")Integer commodityId){
+        orderBiz.increaseCommodityQuantity(userId, commodityId);
+        return "redirect:/order/cart";
+    }
+
+    /**
+     * 减少购物车中商品的数量
+     * @param userId 用户编号
+     * @param commodityId 商品编号
+     * @return 刷新当前页面
+     */
+    @RequestMapping(value = "/decrease/{userId}/{commodityId}", method = RequestMethod.GET)
+    public String decrease(@PathVariable("userId")Integer userId, @PathVariable("commodityId")Integer commodityId){
+        orderBiz.decreaseCommodityQuantity(userId, commodityId);
+        return "redirect:/order/cart";
+    }
+
+    /**
+     * 移除购物车中商品
+     * @param userId 用户编号
+     * @param commodityId 商品编号
+     * @return 刷新当前页面
+     */
+    @RequestMapping(value = "/remove/{userId}/{commodityId}", method = RequestMethod.GET)
+    public String remove(@PathVariable("userId")Integer userId, @PathVariable("commodityId")Integer commodityId){
+        orderBiz.removeCommodity(userId, commodityId);
+        return "redirect:/order/cart";
     }
 }

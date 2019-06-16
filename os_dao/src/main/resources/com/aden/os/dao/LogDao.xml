@@ -8,9 +8,10 @@
         <result column="module" property="module" javaType="String"/>
         <result column="result" property="result" javaType="String"/>
         <result column="time" property="time" javaType="java.util.Date"/>
-        <association property="operator" column="operator_id" javaType="String">
-            <result column="name" property="operator" javaType="String"/>
-        </association>
+        <association property="operator" column="operator_id" select="com.aden.os.dao.UserDao.selectName"/>
+<!--        <association property="operator" column="operator_id" javaType="String">-->
+<!--            <result column="name" property="operator" javaType="String"/>-->
+<!--        </association>-->
     </resultMap>
 
     <insert id="insert" parameterType="Log">
@@ -18,12 +19,20 @@
     </insert>
 
     <select id="selectByType" parameterType="String" resultMap="log">
-        select l.*, u.name from log l left join user u on u.id = l.operator_id
-        where l.type=#{type} order by time desc;
+        select * from log where type=#{type} order by time desc
     </select>
 
+<!--    <select id="selectByType" parameterType="String" resultMap="log">-->
+<!--        select l.*, u.name from log l left join user u on u.id = l.operator_id-->
+<!--        where l.type=#{type} order by time desc-->
+<!--    </select>-->
+
     <select id="selectByOperator" parameterType="Integer" resultMap="log">
-        select l.*, u.name from log l left join user u on u.id = l.operator_id
-        where operator_id=#{id} order by time desc;
+        select * from log where operator_id=#{id} order by time desc
     </select>
+
+<!--    <select id="selectByOperator" parameterType="Integer" resultMap="log">-->
+<!--        select l.*, u.name from log l left join user u on u.id = l.operator_id-->
+<!--        where operator_id=#{id} order by time desc-->
+<!--    </select>-->
 </mapper>

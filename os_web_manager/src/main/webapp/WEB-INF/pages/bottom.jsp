@@ -139,6 +139,20 @@
         $("#all_orders").addClass("active");
     });
 
+    $("#navigate_page_btn").click(function () {
+        if ($("#current_user_id").val() != null){
+            var current_user_id = $("#current_user_id").val();
+        }
+        var page_num = $("#navigate_page_num").val();
+        var page_type = $("#current_page_type").val();
+        var page_model = $("#current_page_model").val();
+        if (page_type !== "personal" && page_num != null && page_num > 0){
+            window.location.href = "/backstage/"+ page_model +"/list/"+ page_type +"/" + page_num;
+        }else{
+            window.location.href = "/backstage/"+ page_model + "/" + page_type + "/" + current_user_id + "/list/" + page_num;
+        }
+    })
+
 
 </script>
 </body>
