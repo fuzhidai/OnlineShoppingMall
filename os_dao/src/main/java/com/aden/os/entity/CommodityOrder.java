@@ -5,14 +5,23 @@ import java.util.List;
 
 public class CommodityOrder {
 
+    // 订单编号
     private Integer id;
+    // 用户编号
     private Integer userId;
+    // 订单状态
     private String status;
+    // 商品总数量
     private Integer commodityQuantity;
+    // 商品总金额
     private Float totalAmount;
+    // 运单号
     private String waybillNumber;
+    // 创建时间
     private Date createTime;
+    // 更新时间
     private Date updateTime;
+    // 订单明细列表
     private List<CommodityOrderDetail> detailList;
 
     public Integer getId() {

@@ -2,13 +2,21 @@ package com.aden.os.entity;
 
 public class CommodityOrderDetail {
 
+    // 订单明细编号
     private Integer id;
+    // 订单编号
     private Integer orderId;
+    // 商品编号
     private Integer commodityId;
+    // 商品名称
     private String commodityName;
+    // 商品价格
     private Float commodityPrice;
+    // 商品数量
     private Integer commodityQuantity;
+    // 商品实体
     private Commodity commodity;
+    // 订单实体
     private CommodityOrder commodityOrder;
 
     public Integer getId() {

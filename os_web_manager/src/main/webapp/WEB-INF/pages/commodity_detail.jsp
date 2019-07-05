@@ -77,7 +77,7 @@
 
         <div class="row col-lg-12" style="margin-top: 20px;">
             <h5>展示图片</h5>
-            <h4 class="subtext">${DETAIL.image}</h4>
+            <img class="featurette-image img-responsive center-block" src="/pic/${DETAIL.image}" alt="Generic placeholder image">
         </div>
 
     </div>

@@ -23,4 +23,6 @@ public interface CommodityDao {
     List<Commodity> selectByStatus(String status);
 
     List<Commodity> selectEveryTypeTopThree();
+
+    List<Commodity> selectSalesVolumeTopTen();
 }

@@ -4,16 +4,26 @@ import java.util.Date;
 
 public class User {
 
+    // 用户编号
     private Integer id;
     private Integer permission;
+    // 用户姓名
     private String name;
+    // 用户电话
     private String phone;
+    // 用户邮箱
     private String email;
+    // 用户状态
     private String status;
+    // 用户地址
     private String address;
+    // 用户昵称
     private String nickname;
+    // 用户密码
     private String password;
+    // 创建时间
     private Date createTime;
+    // 最后登录时间
     private Date lastLogin;
 
     public Integer getId() {

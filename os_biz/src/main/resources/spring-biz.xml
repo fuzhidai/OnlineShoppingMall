@@ -3,6 +3,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/context
@@ -10,10 +11,11 @@
     http://www.springframework.org/schema/aop
     http://www.springframework.org/schema/aop/spring-aop.xsd
     http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+    http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <import resource="spring-dao.xml"/>
     <import resource="spring-redis.xml"/>
+    <import resource="spring-rabbitMq.xml"/>
     
     <!-- 开启自动扫描 -->
     <context:component-scan base-package="com.aden.os.biz"/>
@@ -40,36 +42,23 @@
     </aop:config>
 
 
-    <bean id="springUtils" class="com.aden.os.biz.job.SpringUtils" />
+    <!-- quartz 配置调度工厂 -->
+    <bean id="springJobSchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
 
-<!--        &lt;!&ndash; 配置Job类 &ndash;&gt;-->
-<!--    <bean id="myJob" class="com.aden.os.biz.job.CommodityJob"></bean>-->
+    <!-- 使用缺省名称为 cacheManager 的缓存管理器，其缺省实现为 org.springframework.cache.support.SimpleCacheManager -->
+    <cache:annotation-driven cache-manager="redisCacheManager"/>
+    <!-- 配置redis缓存并设置cache过期时间 -->
+    <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+        <constructor-arg ref="redisTemplate"/>
+        <property name="defaultExpiration" value="600"/>
+        <property name="cacheNames" value="redisCacheManager"/>
+    </bean>
 
-<!--    &lt;!&ndash; 配置JobDetail &ndash;&gt;-->
-<!--    <bean id="springQtzJobMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
-<!--        &lt;!&ndash; 执行目标job &ndash;&gt;-->
-<!--        <property name="targetObject" ref="myJob"></property>-->
-
-<!--        &lt;!&ndash; 要执行的方法 &ndash;&gt;-->
-<!--        <property name="targetMethod" value="execute"></property>-->
-<!--    </bean>-->
-
-<!--    &lt;!&ndash; 配置tirgger触发器 &ndash;&gt;-->
-<!--    <bean id="cronTriggerFactoryBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
-<!--        &lt;!&ndash; jobDetail &ndash;&gt;-->
-<!--        <property name="jobDetail" ref="springQtzJobMethod"></property>-->
-
-<!--        &lt;!&ndash; cron表达式，执行时间  每5秒执行一次 &ndash;&gt;-->
-<!--        <property name="cronExpression" value="0/5 * * * * ?"></property>-->
-<!--    </bean>-->
-
-<!--    &lt;!&ndash; 配置调度工厂 &ndash;&gt;-->
-<!--    <bean id="springJobSchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
-<!--        <property name="triggers">-->
-<!--            <list>-->
-<!--                <ref bean="cronTriggerFactoryBean"></ref>-->
-<!--            </list>-->
-<!--        </property>-->
-<!--    </bean>-->
+    <!-- 文件上传 -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置上传文件的最大尺寸为5MB -->
+        <property name="maxUploadSize" value="5242880"/>
+    </bean>
 
 </beans>

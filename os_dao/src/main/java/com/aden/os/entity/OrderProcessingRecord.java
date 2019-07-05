@@ -4,10 +4,15 @@ import java.util.Date;
 
 public class OrderProcessingRecord {
 
+    // 订单详情编号
     private Integer orderId;
+    // 操作人编号
     private Integer operatorId;
+    // 订单更新状态
     private String status;
+    // 操作时间
     private Date time;
+    // 操作人姓名
     private String operator;
 
     public Integer getOrderId() {

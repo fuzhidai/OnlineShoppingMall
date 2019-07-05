@@ -4,12 +4,19 @@ import java.util.Date;
 
 public class Evaluation {
 
+    // 评价编号
     private Integer id;
+    // 订单明细编号
     private Integer orderDetailId;
+    // 评价星级
     private Integer grade;
+    // 评价内容
     private String content;
+    // 评价图片
     private String image;
+    // 评价时间
     private Date time;
+    // 用户昵称
     private String userName;
 
     public Integer getId() {

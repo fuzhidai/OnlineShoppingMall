@@ -4,12 +4,19 @@ import java.util.Date;
 
 public class Log {
 
+    // 日志类型
     private String type;
+    // 管理员编号
     private Integer operatorId;
+    // 管理员姓名
     private String operator;
+    // 具体操作
     private String operating;
+    // 操作模块
     private String module;
+    // 操作结果
     private String result;
+    // 操作结果
     private Date time;
 
     public String getType() {

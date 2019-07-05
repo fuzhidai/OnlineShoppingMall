@@ -1,22 +1,37 @@
 package com.aden.os.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Commodity {
+public class Commodity implements Serializable {
 
+    // 商品编号
     private Integer id;
+    // 商品库存
     private Integer stock;
+    // 商品种类编号
     private Integer typeId;
+    // 商品销售量
     private Integer salesVolume;
+    // 商品价格
     private Float price;
+    // 商品名称
     private String name;
+    // 商品种类
     private String type;
+    // 商品图片
     private String image;
+    // 商品状态
     private String status;
+    // 商品介绍
     private String introduction;
+    // 商品详细介绍
     private String detailedIntroduction;
+    // 商品上架时间
     private Date addedTime;
+    // 商品创建时间
     private Date createTime;
+    // 商品最后更新时间
     private Date updateTime;
 
     public Integer getId() {

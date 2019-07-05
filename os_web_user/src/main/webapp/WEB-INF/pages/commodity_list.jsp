@@ -38,7 +38,7 @@
         <c:forEach items="${LIST}" var="item">
 
             <div class="col-lg-4">
-                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="100%" height="202px">
+                <img src="/pic/${item.image}" alt="Generic placeholder image" width="100%" height="350px">
                 <h2>${item.name}</h2>
                 <p style="height: 80px;">${item.introduction}</p>
                 <p>

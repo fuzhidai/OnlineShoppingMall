@@ -50,7 +50,7 @@
             </form>
         </div>
         <div class="col-md-5 col-md-pull-7">
-            <img class="featurette-image img-responsive center-block" src="test.jpg" alt="Generic placeholder image">
+            <img class="featurette-image img-responsive center-block" src="/pic/${DETAIL.image}" alt="Generic placeholder image">
         </div>
     </div>
 

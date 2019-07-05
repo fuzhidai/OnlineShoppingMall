@@ -78,6 +78,31 @@
         <div class="col-lg-2"></div>
     </div>
 
+    <div class="page-header">
+        <h1>热门排行<small style="float: right; margin-top: 2%; font-size: medium;">查看更多</small></h1>
+    </div>
+    <!-- Three columns of text below the carousel -->
+    <div class="row">
+        <div class="col-lg-offset-1 col-lg-5">
+            <c:forEach var="index" begin="0" end="4">
+                <h3 class="col-lg-offset-1">
+                    <span class="col-lg-2">${index+1}.</span>
+                    <small class="col-lg-7" style="margin-top: 2%"><strong><a href="/commodity/detail/${HOT_LIST[index].id}">${HOT_LIST[index].name}</a></strong></small>
+                    <small><span>月销 <strong>${HOT_LIST[index].salesVolume}</strong> 件</span></small>
+                </h3>
+            </c:forEach>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-6">
+            <c:forEach var="index" begin="5" end="9">
+                <h3 class="col-lg-offset-1">
+                    <span class="col-lg-2">${index+1}.</span>
+                    <small class="col-lg-7" style="margin-top: 2%"><strong><a href="/commodity/detail/${HOT_LIST[index].id}">${HOT_LIST[index].name}</a></strong></small>
+                    <small><span>月销 <strong>${HOT_LIST[index].salesVolume}</strong> 件</span></small>
+                </h3>
+            </c:forEach>
+        </div><!-- /.col-lg-4 -->
+    </div><!-- /.row -->
+
     <c:forEach var="index" begin="0" end="${(LIST.size())/3-1}">
 
         <div class="page-header">
@@ -88,7 +113,7 @@
             <c:forEach items="${LIST}" var="item" begin="${index*3}" end="${index*3+2}">
 
                 <div class="col-lg-4">
-                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="100%" height="202px">
+                    <img src="/pic/${item.image}" alt="Generic placeholder image" width="100%" height="350px">
                     <h2>${item.name}</h2>
                     <p style="height: 80px;">${item.introduction}</p>
                     <p>

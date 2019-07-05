@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,7 @@ public class CommodityController {
     @RequestMapping(value = "/homepage", method = RequestMethod.GET)
     public String listAll(Map<String, Object> model){
         model.put("LIST", commodityBiz.getEveryTypeTopThree());
+        model.put("HOT_LIST", commodityBiz.getSalesVolumeTopTen());
         return "commodity_homepage";
     }
 
@@ -45,6 +47,7 @@ public class CommodityController {
 
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public String detail(@PathVariable("id")Integer id, Map<String, Object> model){
+
         model.put("DETAIL", commodityBiz.get(id));
 
         List<CommodityOrderDetail> commodityOrderDetailList = orderBiz.getCommoditySalesRecord(id);
